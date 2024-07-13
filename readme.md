@@ -1,5 +1,9 @@
 # mcxn947 实践
 
+## 任务要求
+
+![任务要求](./pic/活动任务要求.png)
+
 ## 开箱
 
 从 rtt github 仓库拉取的 bsp 例程有问题，需要使用 scons --target=mdk5 重新生成下
