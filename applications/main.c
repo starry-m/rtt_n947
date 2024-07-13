@@ -47,7 +47,7 @@ int main(void)
     if (dfs_mount("sd", "/", "elm", 0, NULL) == 0)
     {
         rt_kprintf("sd mounted to /\n");
-    }
+    } 
     else
     {
         rt_kprintf("sd mount to / failed\n");
