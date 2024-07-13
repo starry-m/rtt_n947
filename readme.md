@@ -35,3 +35,5 @@ dist project successfully!
 ````
 
 打开 eth,只要在 chip driver 中使能，并在 rtconfig.h 中修改 RT_LWIP_TCPTHREAD_STACKSIZE 大小为 2048 即可。
+
+rtt 的 tcp 客户端示例需要添加头文件`#include <stdlib.h>`才不会报错
