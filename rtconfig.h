@@ -100,6 +100,7 @@
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
+#define RT_USING_SPI
 #define RT_USING_PIN
 #define RT_USING_HWTIMER
 /* end of Device Drivers */
@@ -413,6 +414,9 @@
 #define BSP_USING_UART4
 #define BSP_USING_UART5
 #define BSP_USING_UART2
+#define BSP_USING_SPI
+#define BSP_USING_SPI1
+#define BSP_USING_SPI8
 #define BSP_USING_ETH
 /* end of On-chip Peripheral Drivers */
 

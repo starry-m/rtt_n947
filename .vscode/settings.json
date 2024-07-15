@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "drv_spi.h": "c",
+        "rtdevice.h": "c",
+        "st7735s.h": "c",
+        "st7735s_conf.h": "c",
+        "stdio.h": "c",
+        "rtthread.h": "c"
+    }
+}

@@ -7,6 +7,8 @@ src = Split("""
 board.c
 MCUX_Config/board/clock_config.c
 MCUX_Config/board/pin_mux.c
+st7735s_conf.c
+st7735s.c
 """)
 
 if GetDepend(['BSP_USING_SPI6_SAMPLE']):
