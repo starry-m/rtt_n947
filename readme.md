@@ -84,3 +84,8 @@ rtt 的 tcp 客户端示例需要添加头文件`#include <stdlib.h>`才不会�
 | P3_2      | I2C_SDA | P0_18     | SPI_MISO |
 | P5_6      | RESET   | P0_16     | SPI_MOSI |
 | P0_20     | INT     | P0_19     | SPI_CS   |
+
+## 说明
+
+在 menuconfig 中添加在线包之后，还需要手动`pkgs --update`
+并且，在 git 中，不会自动包含，拉取下来后还需要再更新下。
