@@ -100,6 +100,15 @@
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
+#define RT_USING_I2C
+#define RT_USING_I2C_BITOPS
+#define RT_USING_SOFT_I2C
+#define RT_USING_SOFT_I2C1
+#define RT_SOFT_I2C1_SCL_PIN 49
+#define RT_SOFT_I2C1_SDA_PIN 48
+#define RT_SOFT_I2C1_BUS_NAME "i2c1"
+#define RT_SOFT_I2C1_TIMING_DELAY 10
+#define RT_SOFT_I2C1_TIMING_TIMEOUT 10
 #define RT_USING_SPI
 #define RT_USING_PIN
 #define RT_USING_HWTIMER
@@ -128,6 +137,7 @@
 
 /* end of Interprocess Communication (IPC) */
 /* end of POSIX (Portable Operating System Interface) layer */
+#define RT_USING_CPLUSPLUS
 /* end of C/C++ and POSIX layer */
 
 /* Network */
@@ -177,7 +187,7 @@
 #define RT_LWIP_TCP_WND 8196
 #define RT_LWIP_TCPTHREAD_PRIORITY 10
 #define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
-#define RT_LWIP_TCPTHREAD_STACKSIZE 2048
+#define RT_LWIP_TCPTHREAD_STACKSIZE 1024
 #define RT_LWIP_ETHTHREAD_PRIORITY 12
 #define RT_LWIP_ETHTHREAD_STACKSIZE 1024
 #define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
@@ -332,6 +342,10 @@
 /* touch drivers */
 
 /* end of touch drivers */
+#define PKG_USING_I2C_TOOLS
+#define I2C_TOOLS_USE_SW_I2C
+#define I2C_TOOLS_SW_ACK_TIMEOUT 100
+#define PKG_USING_I2C_TOOLS_LATEST_VERSION
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
