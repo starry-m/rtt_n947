@@ -4,6 +4,7 @@ import os
 cwd     = GetCurrentDir()
 CPPPATH = [cwd]
 src     = Glob('*.c')
+src     += Glob('*.cpp')
 
 group = DefineGroup('Applications', src, depend = [''], CPPPATH = CPPPATH)
 

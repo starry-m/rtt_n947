@@ -21,6 +21,12 @@
 
 static void sw_pin_cb(void *args);
 
+//static struct rt_i2c_bus_device *i2c_bus = RT_NULL;     /* I2C总线设备句柄 */
+//rt_uint8_t read_buff[2];
+//#define P3T1755_ADDR 0X48
+
+
+
 int main(void)
 {
 #if defined(__CC_ARM)
@@ -53,6 +59,17 @@ int main(void)
         rt_kprintf("sd mount to / failed\n");
     }
 #endif
+
+//    i2c_bus=rt_i2c_bus_device_find("i2c1");
+//     if (i2c_bus == RT_NULL)
+//    {
+//        rt_kprintf("can't find %s device!\n", "i2c1");
+//    }
+//    else
+//    {
+//			
+//        
+//    }
 
     while (1)
     {
