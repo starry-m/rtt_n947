@@ -259,12 +259,12 @@ void LCD_Set_Window(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height) {
     if (ST7735S_DEV.CNF.screen_mode == VER_0_MODE || ST7735S_DEV.CNF.screen_mode == VER_1_MODE) {
 
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setxcmd);
-        ST7735S_write_dat_u16(sx + 1);      //设置 X方向起点
-        ST7735S_write_dat_u16(width + 1);   //设置 X方向终点
+        ST7735S_write_dat_u16(sx + 2);      //设置 X方向起点
+        ST7735S_write_dat_u16(width + 2);   //设置 X方向终点
 
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setycmd);
-        ST7735S_write_dat_u16(sy + 2);      //设置 Y方向起点
-        ST7735S_write_dat_u16(height + 2);  //设置 Y方向终点
+        ST7735S_write_dat_u16(sy + 0);      //设置 Y方向起点
+        ST7735S_write_dat_u16(height + 0);  //设置 Y方向终点
 
     } else {
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setxcmd);
@@ -272,8 +272,8 @@ void LCD_Set_Window(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height) {
         ST7735S_write_dat_u16(width + 1);   //设置 X方向终点
 
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setycmd);
-        ST7735S_write_dat_u16(sy + 2);      //设置 Y方向起点
-        ST7735S_write_dat_u16(height + 2);  //设置 Y方向终点
+        ST7735S_write_dat_u16(sy + 1);      //设置 Y方向起点
+        ST7735S_write_dat_u16(height + 1);  //设置 Y方向终点
 
     }
 }
@@ -308,13 +308,13 @@ void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos) {
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setxcmd);
         ST7735S_write_dat_u16(Xpos+1);
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setycmd);
-        ST7735S_write_dat_u16(Ypos+2);
+        ST7735S_write_dat_u16(Ypos+1);
 
     } else {
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setxcmd);
         ST7735S_write_dat_u16(Xpos+1);
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setycmd);
-        ST7735S_write_dat_u16(Ypos+2);
+        ST7735S_write_dat_u16(Ypos+1);
     }
 
 }
