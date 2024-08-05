@@ -110,6 +110,9 @@
 #define RT_SOFT_I2C1_TIMING_DELAY 10
 #define RT_SOFT_I2C1_TIMING_TIMEOUT 10
 #define RT_USING_SPI
+#define RT_USING_SENSOR
+#define RT_USING_SENSOR_V2
+#define RT_USING_SENSOR_CMD
 #define RT_USING_PIN
 #define RT_USING_HWTIMER
 /* end of Device Drivers */
@@ -316,6 +319,8 @@
 /* Micrium: Micrium software products porting for RT-Thread */
 
 /* end of Micrium: Micrium software products porting for RT-Thread */
+#define PKG_USING_PERF_COUNTER
+#define PKG_USING_PERF_COUNTER_V2241
 /* end of system packages */
 
 /* peripheral libraries and drivers */
@@ -373,6 +378,14 @@
 
 /* Arduino libraries */
 
+#define PKG_USING_RTDUINO
+#define RTDUINO_NO_SETUP_LOOP
+#define RTDUINO_TINY_MODE
+#define RTDUINO_SUPPORT_HIGH_PRECISION_MICROS
+#define RTDUINO_USING_WIRE
+#define RTDUINO_DEFAULT_IIC_BUS_NAME "i2c1"
+#define RTDUINO_WIRE_BUFFER_LENGTH 32
+#define PKG_USING_RTDUINO_LATEST_VERSION
 
 /* Projects and Demos */
 
@@ -380,6 +393,8 @@
 
 /* Sensors */
 
+#define PKG_USING_ARDUINO_SENSOR_DEVICE_DRIVERS
+#define PKG_USING_ARDUINO_SENSOR_DEVICE_DRIVERS_LATEST_VERSION
 /* end of Sensors */
 
 /* Display */

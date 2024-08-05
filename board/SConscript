@@ -10,7 +10,7 @@ MCUX_Config/board/pin_mux.c
 st7735s_conf.c
 st7735s.c
 """)
-
+src     += Glob('*.cpp')
 if GetDepend(['BSP_USING_SPI6_SAMPLE']):
     src += Glob('ports/spi_sample.c')
 

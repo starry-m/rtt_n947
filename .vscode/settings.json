@@ -7,4 +7,10 @@
         "stdio.h": "c",
         "rtthread.h": "c"
     }
+    "terminal.integrated.profiles.windows": {
+        "rtt-env": {
+            "path":"cmd.exe",
+            "args": ["/K","D:\\tools\\env-windows-v2.0.0\\env-windows\\tools\\bin\\env-init.bat"]
+        },
+    },
 }
