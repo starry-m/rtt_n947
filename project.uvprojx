@@ -337,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--target=arm-arm-none-eabi</MiscControls>
-              <Define>RT_USING_ARMLIBC, DEBUG, __CLK_TCK=RT_TICK_PER_SECOND, ARDUINO_ARCH_RTTHREAD=10000, CPU_MCXN947VDF_cm33_core0, ARDUINO=10819, __STDC_LIMIT_MACROS, __perf_counter_printf__=rt_kprintf, RT_USING_LIBC, __RTTHREAD__</Define>
+              <Define>__CLK_TCK=RT_TICK_PER_SECOND, ARDUINO_ARCH_RTTHREAD=10000, __RTTHREAD__, __perf_counter_printf__=rt_kprintf, DEBUG, RT_USING_LIBC, CPU_MCXN947VDF_cm33_core0, RT_USING_ARMLIBC, ARDUINO=10819, __STDC_LIMIT_MACROS</Define>
               <Undefine></Undefine>
-              <IncludePath>packages\perf_counter-v2.2.4.1;packages\RTduino-latest\libraries\buildin\Wire;Libraries\drivers;Libraries\drivers\config;rt-thread\components\net\sal\include;rt-thread\components\net\sal\impl;rt-thread\components\libc\compilers\common\extension;rt-thread\components\libc\cplusplus;packages\i2c-tools-latest\src;Libraries\MCXN947\MCXN947;rt-thread\components\libc\compilers\common\include;applications;rt-thread\components\net\sal\include\socket\sys_socket;rt-thread\components\net\netdev\include;rt-thread\components\net\lwip\lwip-2.0.3\src\include\netif;rt-thread\components\libc\posix\io\epoll;packages\i2c-tools-latest;rt-thread\components\libc\posix\io\eventfd;rt-thread\libcpu\arm\cortex-m33;rt-thread\components\libc\compilers\common\extension\fcntl\octal;board\MCUX_Config\board;rt-thread\include;rt-thread\components\net\lwip\port;rt-thread\components\drivers\include;rt-thread\components\drivers\include;rt-thread\components\libc\posix\ipc;.;Libraries\MCXN947\MCXN947\drivers;packages\RTduino-latest\libraries\user;rt-thread\components\utilities\ulog;rt-thread\components\finsh;rt-thread\libcpu\arm\common;rt-thread\components\drivers\spi;rt-thread\components\net\sal\include\socket;packages\RTduino-latest\core;rt-thread\components\drivers\include;rt-thread\components\drivers\include;rt-thread\components\drivers\include;rt-thread\components\drivers\include;board;Libraries\CMSIS\Core\Include;rt-thread\components\drivers\include;rt-thread\components\net\lwip\lwip-2.0.3\src\include\ipv4;rt-thread\components\libc\posix\io\poll;rt-thread\components\net\lwip\lwip-2.0.3\src\include</IncludePath>
+              <IncludePath>rt-thread\components\drivers\include;rt-thread\components\libc\posix\io\eventfd;rt-thread\libcpu\arm\cortex-m33;rt-thread\components\utilities\ulog;rt-thread\components\net\sal\include\socket\sys_socket;rt-thread\components\libc\compilers\common\extension\fcntl\octal;rt-thread\components\libc\compilers\common\include;rt-thread\components\libc\posix\ipc;rt-thread\components\net\sal\impl;packages\RTduino-latest\core;rt-thread\components\drivers\spi;rt-thread\components\net\lwip\lwip-2.0.3\src\include\ipv4;rt-thread\components\net\lwip\lwip-2.0.3\src\include;packages\RTduino-latest\libraries\user;Libraries\MCXN947\MCXN947;Libraries\CMSIS\Core\Include;rt-thread\components\net\lwip\lwip-2.0.3\src\include\netif;rt-thread\components\net\sal\include\socket;rt-thread\components\drivers\include;board\MCUX_Config\board;.;Libraries\MCXN947\MCXN947\drivers;packages\perf_counter-v2.2.4.1;rt-thread\components\drivers\include;rt-thread\components\finsh;rt-thread\include;Libraries\drivers;rt-thread\components\libc\posix\io\poll;rt-thread\components\net\sal\include;rt-thread\components\drivers\include;rt-thread\components\libc\compilers\common\extension;applications;packages\i2c-tools-latest;rt-thread\components\libc\posix\io\epoll;rt-thread\components\drivers\include;rt-thread\components\drivers\include;Libraries\drivers\config;rt-thread\components\net\lwip\port;rt-thread\components\drivers\include;rt-thread\libcpu\arm\common;packages\i2c-tools-latest\src;rt-thread\components\libc\cplusplus;rt-thread\components\net\netdev\include;packages\RTduino-latest\libraries\buildin\Wire;board</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -384,14 +384,14 @@
           <GroupName>Applications</GroupName>
           <Files>
             <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>applications\main.c</FilePath>
+            </File>
+            <File>
               <FileName>st7735_demo.c</FileName>
               <FileType>1</FileType>
               <FilePath>applications\st7735_demo.c</FilePath>
-            </File>
-            <File>
-              <FileName>temp_read.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>applications\temp_read.cpp</FilePath>
             </File>
             <File>
               <FileName>tcp_client_demo.c</FileName>
@@ -399,9 +399,9 @@
               <FilePath>applications\tcp_client_demo.c</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>applications\main.c</FilePath>
+              <FileName>temp_read.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>applications\temp_read.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -518,7 +518,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -574,7 +574,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -630,7 +630,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -686,7 +686,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -742,7 +742,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -798,7 +798,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -854,7 +854,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -910,7 +910,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -966,7 +966,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1022,7 +1022,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1078,7 +1078,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1134,7 +1134,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1190,7 +1190,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1246,7 +1246,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1302,7 +1302,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1358,7 +1358,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1414,7 +1414,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1470,7 +1470,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1526,7 +1526,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1582,7 +1582,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1638,7 +1638,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_IPC_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1653,6 +1653,11 @@
               <FileName>Adafruit_APDS9960.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>board\Adafruit_APDS9960.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_I2CDevice.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>board\Adafruit_I2CDevice.cpp</FilePath>
             </File>
             <File>
               <FileName>clock_config.c</FileName>
@@ -1705,16 +1710,6 @@
           <GroupName>Finsh</GroupName>
           <Files>
             <File>
-              <FileName>msh_parse.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>rt-thread\components\finsh\msh_parse.c</FilePath>
-            </File>
-            <File>
-              <FileName>shell.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>rt-thread\components\finsh\shell.c</FilePath>
-            </File>
-            <File>
               <FileName>msh.c</FileName>
               <FileType>1</FileType>
               <FilePath>rt-thread\components\finsh\msh.c</FilePath>
@@ -1723,6 +1718,16 @@
               <FileName>cmd.c</FileName>
               <FileType>1</FileType>
               <FilePath>rt-thread\components\finsh\cmd.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>rt-thread\components\finsh\shell.c</FilePath>
+            </File>
+            <File>
+              <FileName>msh_parse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>rt-thread\components\finsh\msh_parse.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1799,7 +1804,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1855,7 +1860,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1911,7 +1916,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -1967,7 +1972,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2023,7 +2028,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2079,7 +2084,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2135,7 +2140,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2191,7 +2196,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2247,7 +2252,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2303,7 +2308,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2359,7 +2364,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2415,7 +2420,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2471,7 +2476,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2527,7 +2532,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2583,7 +2588,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2639,7 +2644,7 @@
                       <MiscControls> </MiscControls>
                       <Define>__RT_KERNEL_SOURCE__</Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -2691,94 +2696,14 @@
           <GroupName>Libraries</GroupName>
           <Files>
             <File>
-              <FileName>fsl_lpadc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpadc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_vref.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_vref.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio_i2c_master.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_i2c_master.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_lptmr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lptmr.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_enc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_enc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexcan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexcan.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_lpi2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpi2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_evtg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_evtg.c</FilePath>
-            </File>
-            <File>
               <FileName>startup_MCXN947_cm33_core0.s</FileName>
               <FileType>2</FileType>
               <FilePath>Libraries\MCXN947\MCXN947\arm\startup_MCXN947_cm33_core0.s</FilePath>
             </File>
             <File>
-              <FileName>fsl_eim.c</FileName>
+              <FileName>fsl_lpuart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_eim.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_irtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_irtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_ewm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_ewm.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_ctimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_ctimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_lpi2c_edma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpi2c_edma.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_erm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_erm.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_common.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_uart.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpuart.c</FilePath>
             </File>
             <File>
               <FileName>fsl_cache.c</FileName>
@@ -2786,44 +2711,59 @@
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cache.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_i3c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_i3c.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_itrc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_itrc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_dac.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_enet.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_enet.c</FilePath>
-            </File>
-            <File>
               <FileName>fsl_flexspi_edma.c</FileName>
               <FileType>1</FileType>
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexspi_edma.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_lpspi_edma.c</FileName>
+              <FileName>fsl_mrt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpspi_edma.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_mrt.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_lpuart.c</FileName>
+              <FileName>fsl_flexio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpuart.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lpspi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpspi.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_vref.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_vref.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lpi2c_edma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpi2c_edma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_enc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_enc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_erm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_erm.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_cmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cmc.c</FilePath>
             </File>
             <File>
               <FileName>fsl_reset.c</FileName>
@@ -2836,29 +2776,9 @@
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_common_arm.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_flexio_mculcd.c</FileName>
+              <FileName>fsl_usdhc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_mculcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_clock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_clock.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_cache_lpcac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cache_lpcac.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_mrt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_mrt.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_crc.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_usdhc.c</FilePath>
             </File>
             <File>
               <FileName>fsl_flexspi.c</FileName>
@@ -2866,24 +2786,14 @@
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexspi.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_usdhc.c</FileName>
+              <FileName>fsl_eim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_usdhc.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_eim.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_flexio_spi_edma.c</FileName>
+              <FileName>fsl_cache_lpcac.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_spi_edma.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio_uart_edma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_uart_edma.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_lpspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpspi.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cache_lpcac.c</FilePath>
             </File>
             <File>
               <FileName>fsl_lpflexcomm.c</FileName>
@@ -2891,39 +2801,9 @@
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpflexcomm.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_cmc.c</FileName>
+              <FileName>fsl_flexio_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio_mculcd_edma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_mculcd_edma.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_cdog.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cdog.c</FilePath>
-            </File>
-            <File>
-              <FileName>system_MCXN947_cm33_core0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\system_MCXN947_cm33_core0.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_edma_soc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_edma_soc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_spc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_spc.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_flexio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio.c</FilePath>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_spi.c</FilePath>
             </File>
             <File>
               <FileName>fsl_edma.c</FileName>
@@ -2931,9 +2811,134 @@
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_edma.c</FilePath>
             </File>
             <File>
+              <FileName>fsl_lpspi_edma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpspi_edma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lpadc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpadc.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_MCXN947_cm33_core0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\system_MCXN947_cm33_core0.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_spi_edma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_spi_edma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_irtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_irtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lpi2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lpi2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_cdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_cdog.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_mculcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_mculcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_itrc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_itrc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_edma_soc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_edma_soc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_ewm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_ewm.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexcan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexcan.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_i2c_master.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_i2c_master.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_dac.c</FilePath>
+            </File>
+            <File>
               <FileName>fsl_dac14.c</FileName>
               <FileType>1</FileType>
               <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_dac14.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_mculcd_edma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_mculcd_edma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_ctimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_ctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_enet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_enet.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_spc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexio_uart_edma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_flexio_uart_edma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i3c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_i3c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lptmr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_lptmr.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_evtg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_evtg.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Libraries\MCXN947\MCXN947\drivers\fsl_gpio.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3131,14 +3136,14 @@
           <GroupName>perf_counter</GroupName>
           <Files>
             <File>
-              <FileName>perf_os_patch_rt_thread.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\perf_counter-v2.2.4.1\os\perf_os_patch_rt_thread.c</FilePath>
-            </File>
-            <File>
               <FileName>perf_counter.c</FileName>
               <FileType>1</FileType>
               <FilePath>packages\perf_counter-v2.2.4.1\perf_counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>perf_os_patch_rt_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\perf_counter-v2.2.4.1\os\perf_os_patch_rt_thread.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3155,118 +3160,6 @@
         <Group>
           <GroupName>RTduino-core</GroupName>
           <Files>
-            <File>
-              <FileName>Print.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>packages\RTduino-latest\core\Print.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
-                  <PublicsOnly>0</PublicsOnly>
-                  <StopOnExitCode>3</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>  -std=c++11</MiscControls>
-                      <Define> </Define>
-                      <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-            <File>
-              <FileName>Stream.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>packages\RTduino-latest\core\Stream.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
-                  <PublicsOnly>0</PublicsOnly>
-                  <StopOnExitCode>3</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>  -std=c++11</MiscControls>
-                      <Define> </Define>
-                      <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
             <File>
               <FileName>HardwareSerial.cpp</FileName>
               <FileType>8</FileType>
@@ -3317,175 +3210,7 @@
                       <MiscControls>  -std=c++11</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-            <File>
-              <FileName>WString.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>packages\RTduino-latest\core\WString.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
-                  <PublicsOnly>0</PublicsOnly>
-                  <StopOnExitCode>3</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>  -std=c++11</MiscControls>
-                      <Define> </Define>
-                      <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-            <File>
-              <FileName>WMath_cpp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>packages\RTduino-latest\core\WMath_cpp.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
-                  <PublicsOnly>0</PublicsOnly>
-                  <StopOnExitCode>3</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>  -std=c++11</MiscControls>
-                      <Define> </Define>
-                      <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-            <File>
-              <FileName>wiring.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\RTduino-latest\core\wiring.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
-                  <PublicsOnly>0</PublicsOnly>
-                  <StopOnExitCode>3</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>  -std=gnu99</MiscControls>
-                      <Define> </Define>
-                      <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -3541,16 +3266,16 @@
                       <MiscControls>  -std=c++11</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
             </File>
             <File>
-              <FileName>IPAddress.cpp</FileName>
+              <FileName>WString.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>packages\RTduino-latest\core\IPAddress.cpp</FilePath>
+              <FilePath>packages\RTduino-latest\core\WString.cpp</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -3597,16 +3322,128 @@
                       <MiscControls>  -std=c++11</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
             </File>
             <File>
-              <FileName>avr_stdlib.c</FileName>
+              <FileName>Print.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>packages\RTduino-latest\core\Print.cpp</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
+                  <PublicsOnly>0</PublicsOnly>
+                  <StopOnExitCode>3</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls>  -std=c++11</MiscControls>
+                      <Define> </Define>
+                      <Undefine> </Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>WMath_cpp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>packages\RTduino-latest\core\WMath_cpp.cpp</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
+                  <PublicsOnly>0</PublicsOnly>
+                  <StopOnExitCode>3</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls>  -std=c++11</MiscControls>
+                      <Define> </Define>
+                      <Undefine> </Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>wiring.c</FileName>
               <FileType>1</FileType>
-              <FilePath>packages\RTduino-latest\core\avr\avr_stdlib.c</FilePath>
+              <FilePath>packages\RTduino-latest\core\wiring.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -3653,7 +3490,7 @@
                       <MiscControls>  -std=gnu99</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -3709,7 +3546,175 @@
                       <MiscControls>  -std=gnu99</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>avr_stdlib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\RTduino-latest\core\avr\avr_stdlib.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
+                  <PublicsOnly>0</PublicsOnly>
+                  <StopOnExitCode>3</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls>  -std=gnu99</MiscControls>
+                      <Define> </Define>
+                      <Undefine> </Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>IPAddress.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>packages\RTduino-latest\core\IPAddress.cpp</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
+                  <PublicsOnly>0</PublicsOnly>
+                  <StopOnExitCode>3</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls>  -std=c++11</MiscControls>
+                      <Define> </Define>
+                      <Undefine> </Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>Stream.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>packages\RTduino-latest\core\Stream.cpp</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>0</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>0</AssembleAssemblyFile>
+                  <PublicsOnly>0</PublicsOnly>
+                  <StopOnExitCode>3</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls>  -std=c++11</MiscControls>
+                      <Define> </Define>
+                      <Undefine> </Undefine>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>
@@ -3770,7 +3775,7 @@
                       <MiscControls>  -std=c++11</MiscControls>
                       <Define> </Define>
                       <Undefine> </Undefine>
-                      <IncludePath> </IncludePath>
+                      <IncludePath></IncludePath>
                     </VariousControls>
                   </Cads>
                 </FileArmAds>

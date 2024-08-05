@@ -48,15 +48,15 @@
 #include "Adafruit_APDS9960.h"
 
 /*!
- *  @brief  Implements missing powf function
+ *  @brief  Implements missing apdspowf function
  *  @param  x
  *          Base number
  *  @param  y
  *          Exponent
  *  @return x raised to the power of y
  */
-float powf(const float x, const float y) {
-  return (float)(pow((double)x, (double)y));
+float apdspowf(const float x, const float y) {
+ return (float)(pow((double)x, (double)y));
 }
 
 Adafruit_APDS9960::~Adafruit_APDS9960() {
@@ -555,7 +555,7 @@ uint16_t Adafruit_APDS9960::calculateColorTemperature(uint16_t r, uint16_t g,
 
   /* Calculate the final CCT */
   cct =
-      (449.0F * powf(n, 3)) + (3525.0F * powf(n, 2)) + (6823.3F * n) + 5520.33F;
+      (449.0F * apdspowf(n, 3)) + (3525.0F * apdspowf(n, 2)) + (6823.3F * n) + 5520.33F;
 
   /* Return the results in degrees Kelvin */
   return (uint16_t)cct;
