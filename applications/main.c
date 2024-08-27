@@ -12,20 +12,18 @@
  *
  */
 
+#include "drv_pin.h"
 #include <rtdevice.h>
 #include <rtthread.h>
-#include "drv_pin.h"
 
-#define LEDB_PIN        ((1*32)+2)
-#define BUTTON_PIN      ((0*32)+23)
+#define LEDB_PIN ((1 * 32) + 2)
+#define BUTTON_PIN ((0 * 32) + 23)
 
 static void sw_pin_cb(void *args);
 
-//static struct rt_i2c_bus_device *i2c_bus = RT_NULL;     /* I2C总线设备句柄 */
-//rt_uint8_t read_buff[2];
-//#define P3T1755_ADDR 0X48
-
-
+// static struct rt_i2c_bus_device *i2c_bus = RT_NULL;     /* I2C总线设备句柄 */
+// rt_uint8_t read_buff[2];
+// #define P3T1755_ADDR 0X48
 
 int main(void)
 {
@@ -39,7 +37,7 @@ int main(void)
     rt_kprintf("using gcc, version: %d.%d\n", __GNUC__, __GNUC_MINOR__);
 #endif
 
-    rt_pin_mode(LEDB_PIN, PIN_MODE_OUTPUT);  /* Set GPIO as Output */
+    rt_pin_mode(LEDB_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
 
     rt_pin_mode(BUTTON_PIN, PIN_MODE_INPUT_PULLUP);
     rt_pin_attach_irq(BUTTON_PIN, PIN_IRQ_MODE_FALLING, sw_pin_cb, RT_NULL);
@@ -47,36 +45,37 @@ int main(void)
 
     rt_kprintf("MCXN947 HelloWorld\r\n");
 
-
 #ifdef RT_USING_SDIO
     rt_thread_mdelay(2000);
     if (dfs_mount("sd", "/", "elm", 0, NULL) == 0)
     {
         rt_kprintf("sd mounted to /\n");
-    } 
+    }
     else
     {
         rt_kprintf("sd mount to / failed\n");
     }
 #endif
 
-//    i2c_bus=rt_i2c_bus_device_find("i2c1");
-//     if (i2c_bus == RT_NULL)
-//    {
-//        rt_kprintf("can't find %s device!\n", "i2c1");
-//    }
-//    else
-//    {
-//			
-//        
-//    }
-
+    //    i2c_bus=rt_i2c_bus_device_find("i2c1");
+    //     if (i2c_bus == RT_NULL)
+    //    {
+    //        rt_kprintf("can't find %s device!\n", "i2c1");
+    //    }
+    //    else
+    //    {
+    //
+    //
+    //    }
+		rt_uint32_t count=0;
     while (1)
     {
-        rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
-        rt_thread_mdelay(600);               /* Delay 500mS */
-        rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
-        rt_thread_mdelay(600);               /* Delay 500mS */
+         rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
+        rt_thread_mdelay(600); /* Delay 500mS */
+			count++;
+//			rt_kprintf("main runnig\r\n");
+         rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
+        rt_thread_mdelay(600); /* Delay 500mS */
     }
 }
 

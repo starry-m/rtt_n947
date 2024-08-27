@@ -58,27 +58,6 @@ static volatile bool s_tsiInProgress = true;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-void TSI0_IRQHandler(void)
-{
-#if BOARD_TSI_ELECTRODE_1 > 15
-    /* errata ERR051410: When reading TSI_COMFIG[TSICH] bitfield, the upper most bit will always be 0. */
-    if ((TSI_GetSelfCapMeasuredChannel(APP_TSI) | 0x10U) == BOARD_TSI_ELECTRODE_1)
-#else
-    if (TSI_GetSelfCapMeasuredChannel(APP_TSI) == BOARD_TSI_ELECTRODE_1)
-#endif
-    {
-        if (TSI_GetCounter(APP_TSI) > (uint16_t)(buffer.calibratedData[BOARD_TSI_ELECTRODE_1] + TOUCH_DELTA_VALUE))
-        {
-//            LED1_TOGGLE(); /* Toggle the touch event indicating LED */
-						rt_kprintf("touch pressed\r\n");
-            s_tsiInProgress = false;
-        }
-    }
-
-    /* Clear endOfScan flag */
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
-    SDK_ISR_EXIT_BARRIER;
-}
 
 /*!
  * @brief Main function
@@ -197,9 +176,78 @@ void touch_main(void)
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Lptmr0ToTsiTrigger);
     LPTMR_StartTimer(LPTMR0); /* Start LPTMR triggering */
 
-    while (1)
+    // while (1)
+    // {
+    //     rt_thread_mdelay(600);
+    // }
+}
+static rt_thread_t tid_touch = RT_NULL;
+
+#define EVENT_FLAG3 (1 << 3)
+#define EVENT_FLAG5 (1 << 5)
+/* 事件控制块 */
+static struct rt_event touch_event;
+void TSI0_IRQHandler(void)
+{
+#if BOARD_TSI_ELECTRODE_1 > 15
+    /* errata ERR051410: When reading TSI_COMFIG[TSICH] bitfield, the upper most bit will always be 0. */
+    if ((TSI_GetSelfCapMeasuredChannel(APP_TSI) | 0x10U) == BOARD_TSI_ELECTRODE_1)
+#else
+    if (TSI_GetSelfCapMeasuredChannel(APP_TSI) == BOARD_TSI_ELECTRODE_1)
+#endif
     {
-			 rt_thread_mdelay(600); 
+        if (TSI_GetCounter(APP_TSI) > (uint16_t)(buffer.calibratedData[BOARD_TSI_ELECTRODE_1] + TOUCH_DELTA_VALUE))
+        {
+            //            LED1_TOGGLE(); /* Toggle the touch event indicating LED */
+            rt_event_send(&touch_event, EVENT_FLAG3);
+
+            s_tsiInProgress = false;
+        }
     }
+
+    /* Clear endOfScan flag */
+    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+    SDK_ISR_EXIT_BARRIER;
 }
 MSH_CMD_EXPORT(touch_main, touch main);
+
+static void thread_touch_entry(void *parameter)
+{
+    rt_uint32_t e;
+
+    touch_main();
+	 rt_event_send(&touch_event, EVENT_FLAG5);
+    while (1)
+    {
+				rt_thread_mdelay(500);
+        /* 第一次接收事件，事件3或事件5任意一个可以触发线程1，接收完后清除事件标志 */
+        if (rt_event_recv(&touch_event, (EVENT_FLAG3 | EVENT_FLAG5), RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR, 500, &e) ==
+            RT_EOK)
+        {
+            rt_kprintf("thread touch: OR recv event 0x%x\n", e);
+					if(EVENT_FLAG3==e)
+            rt_kprintf("touch pressed\r\n");
+        }
+        
+    }
+}
+
+int thread_touch_start(void)
+{
+    rt_err_t result;
+
+    /* 初始化事件对象 */
+    result = rt_event_init(&touch_event, "tou event", RT_IPC_FLAG_FIFO);
+    if (result != RT_EOK)
+    {
+        rt_kprintf("init touch event failed.\n");
+        return -1;
+    }
+    tid_touch = rt_thread_create("th touch", thread_touch_entry, RT_NULL, 1024, 25, 10);
+    /* 如果获得线程控制块，启动这个线程 */
+    if (tid_touch != RT_NULL)
+        rt_thread_startup(tid_touch);
+
+    return 0;
+}
+INIT_APP_EXPORT(thread_touch_start);

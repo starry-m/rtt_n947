@@ -10,9 +10,9 @@
 #include <finsh.h>
 #include <netdb.h>
 #include <rtthread.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h> /* 使用BSD socket，需要包含socket.h头文件 */
-#include <stdlib.h>
 #define BUFSZ 1024
 
 static const char send_data[] = "This is TCP Client from RT-Thread."; /* 发送用到的数据 */
@@ -35,7 +35,7 @@ void tcpclient(int argc, char **argv)
 
     url = argv[1];
     port = strtoul(argv[2], 0, 10);
-
+    rt_kprintf("url:%s,Port: %d\n", url, port);
     /* 通过函数入口参数url获得host地址（如果是域名，会做域名解析） */
     host = gethostbyname(url);
 
