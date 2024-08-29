@@ -119,49 +119,49 @@ void touch_main(void)
     }
 
     /********** SOFTWARE TRIGGER SCAN USING POLLING METHOD ********/
-    rt_kprintf("\r\nNOW, comes to the software trigger scan using polling method!\r\n");
-    TSI_EnableHardwareTriggerScan(APP_TSI, false); /* Enable software trigger scan */
-    TSI_DisableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
-    TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
-    TSI_StartSoftwareTrigger(APP_TSI);
-    while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
-    {
-    }
-    rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
-#if (defined(PAD_TSI_ELECTRODE_2_ENABLED) && PAD_TSI_ELECTRODE_2_ENABLED)
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
-    TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_2);
-    TSI_StartSoftwareTrigger(APP_TSI);
-    while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
-    {
-    }
-    rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
-#endif
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
+//     rt_kprintf("\r\nNOW, comes to the software trigger scan using polling method!\r\n");
+//     TSI_EnableHardwareTriggerScan(APP_TSI, false); /* Enable software trigger scan */
+//     TSI_DisableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
+//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+//     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
+//     TSI_StartSoftwareTrigger(APP_TSI);
+//     while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
+//     {
+//     }
+//     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
+// #if (defined(PAD_TSI_ELECTRODE_2_ENABLED) && PAD_TSI_ELECTRODE_2_ENABLED)
+//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+//     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_2);
+//     TSI_StartSoftwareTrigger(APP_TSI);
+//     while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
+//     {
+//     }
+//     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
+// #endif
+//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
 
-    /********** SOFTWARE TRIGGER SCAN USING INTERRUPT METHOD ********/
-    rt_kprintf("\r\nNOW, comes to the software trigger scan using interrupt method!\r\n");
-    TSI_EnableInterrupts(APP_TSI, kTSI_GlobalInterruptEnable);
-    TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
-    TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
+//     /********** SOFTWARE TRIGGER SCAN USING INTERRUPT METHOD ********/
+//     rt_kprintf("\r\nNOW, comes to the software trigger scan using interrupt method!\r\n");
+//     TSI_EnableInterrupts(APP_TSI, kTSI_GlobalInterruptEnable);
+//     TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
+//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+//     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
 
-    while (s_tsiInProgress)
-    {
-        TSI_StartSoftwareTrigger(APP_TSI);
-    }
-    s_tsiInProgress = true;
-    rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
-#if (defined(PAD_TSI_ELECTRODE_2_ENABLED) && PAD_TSI_ELECTRODE_2_ENABLED)
-    TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_2);
-    TSI_StartSoftwareTrigger(APP_TSI);
-    while (s_tsiInProgress)
-    {
-        TSI_StartSoftwareTrigger(APP_TSI);
-    }
-    rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
-#endif
+//     while (s_tsiInProgress)
+//     {
+//         TSI_StartSoftwareTrigger(APP_TSI);
+//     }
+//     s_tsiInProgress = true;
+//     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
+// #if (defined(PAD_TSI_ELECTRODE_2_ENABLED) && PAD_TSI_ELECTRODE_2_ENABLED)
+//     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_2);
+//     TSI_StartSoftwareTrigger(APP_TSI);
+//     while (s_tsiInProgress)
+//     {
+//         TSI_StartSoftwareTrigger(APP_TSI);
+//     }
+//     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
+// #endif
     /********** HARDWARE TRIGGER SCAN ********/
     rt_kprintf("\r\nNOW, comes to the hardware trigger scan method!\r\n");
     rt_kprintf("After running, touch pad %s each time, you will see LED toggles.\r\n", PAD_TSI_ELECTRODE_1_NAME);
