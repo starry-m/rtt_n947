@@ -24,12 +24,13 @@
 #include <rtthread.h>
 
 Adafruit_APDS9960 apds;
-TwoWire sensor_wire;
+// TwoWire sensor_wire;
 static void apds9960_read_test()
 {
     uint8_t tick = 100;
-    sensor_wire.begin("i2c2");
-    if (!apds.begin(20, APDS9960_AGAIN_4X, APDS9960_ADDRESS, &sensor_wire))
+    // sensor_wire.begin("swi2c0");
+    // if (!apds.begin(20, APDS9960_AGAIN_4X, APDS9960_ADDRESS, &sensor_wire))
+    if (!apds.begin())
     {
         rt_kprintf("failed to initialize device! Please check your wiring.\n");
         return;
@@ -38,20 +39,24 @@ static void apds9960_read_test()
         rt_kprintf("Device initialized!");
 
     // gesture mode will be entered once proximity mode senses something close
-    apds.enableProximity(true);
-    apds.enableGesture(true);
-
+    // apds.enableProximity(true);
+    // apds.enableGesture(true);
+    // uint8_t gesture=0;
+      //enable color sensign mode
+  apds.enableColor(true);
+  rt_kprintf("mode set is enabled");
+  uint16_t r, g, b, c;
     while (tick--)
     {	
-        uint8_t gesture = apds.readGesture();
-        if (gesture == APDS9960_DOWN)
-            rt_kprintf("v");
-        if (gesture == APDS9960_UP)
-            rt_kprintf("^");
-        if (gesture == APDS9960_LEFT)
-            rt_kprintf("<");
-        if (gesture == APDS9960_RIGHT)
-            rt_kprintf(">");
+         
+        //wait for color data to be ready
+        while(!apds.colorDataReady()){
+            rt_thread_mdelay(5);
+        }
+        //get the data and print the different channels
+        apds.getColorData(&r, &g, &b, &c);
+        rt_kprintf("Color data: red=%d green=%d blue=%d clear=%d\n", r, g, b, c);
+        rt_thread_mdelay(500);
     }
 }
 

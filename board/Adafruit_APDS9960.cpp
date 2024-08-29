@@ -44,9 +44,10 @@
 #endif
 #include <math.h>
 #include <stdlib.h>
-
+#include "SoftwareI2C.h"
 #include "Adafruit_APDS9960.h"
 
+SoftwareI2C i2c_adps;
 /*!
  *  @brief  Implements missing apdspowf function
  *  @param  x
@@ -89,19 +90,22 @@ void Adafruit_APDS9960::enable(boolean en) {
  */
 boolean Adafruit_APDS9960::begin(uint16_t iTimeMS, apds9960AGain_t aGain,
                                  uint8_t addr, TwoWire *theWire) {
-
-  if (i2c_dev)
-    delete i2c_dev;
-  i2c_dev = new Adafruit_I2CDevice(addr, theWire);
-  if (!i2c_dev->begin()) {
-    return false;
-  }
-
+ rt_kprintf("Adafruit_APDS9960::start\r\n");
+ i2c_adps.begin(32,33);
+  // if (i2c_dev)
+  //   delete i2c_dev;
+  // i2c_dev = new Adafruit_I2CDevice(addr, theWire);
+  // if (!i2c_dev->begin()) {
+  //   return false;
+  // }
+  rt_kprintf("Adafruit_APDS9960::i2c_dev begin successfully\r\n");
   /* Make sure we're actually connected */
   uint8_t x = read8(APDS9960_ID);
+  rt_kprintf("Adafruit_APDS9960::read  APDS9960_ID:%x\r\n", x);
   if (x != 0xAB) {
     return false;
   }
+  rt_kprintf("Adafruit_APDS9960::read  APDS9960_ID successfully\r\n");
 
   /* Set default integration time and gain */
   setADCIntegrationTime(iTimeMS);
@@ -696,8 +700,19 @@ uint16_t Adafruit_APDS9960::read16R(uint8_t reg) {
  *  @return Position after reading
  */
 uint8_t Adafruit_APDS9960::read(uint8_t reg, uint8_t *buf, uint8_t num) {
-  buf[0] = reg;
-  i2c_dev->write_then_read(buf, 1, buf, num);
+  rt_uint8_t ret = 0;
+  // buf[0] = reg;
+  // i2c_dev->write_then_read(buf, 1, buf, num);
+  i2c_adps.beginTransmission(APDS9960_ADDRESS);
+  i2c_adps.write(reg);
+  i2c_adps.endTransmission();
+  i2c_adps.requestFrom(APDS9960_ADDRESS, num);
+  while (i2c_adps.available()) {
+      buf[ret] = i2c_adps.read();
+      ret++;
+  }
+  // i2c_adps.endTransmission();
+  
   return num;
 }
 
@@ -711,6 +726,10 @@ uint8_t Adafruit_APDS9960::read(uint8_t reg, uint8_t *buf, uint8_t num) {
  *          Number of bytes
  */
 void Adafruit_APDS9960::write(uint8_t reg, uint8_t *buf, uint8_t num) {
-  uint8_t prefix[1] = {reg};
-  i2c_dev->write(buf, num, true, prefix, 1);
+  // uint8_t prefix[1] = {reg};
+  // i2c_dev->write(buf, num, true, prefix, 1);
+  i2c_adps.beginTransmission(APDS9960_ADDRESS);
+  i2c_adps.write(reg);
+  i2c_adps.write(buf, num);
+  i2c_adps.endTransmission();
 }
