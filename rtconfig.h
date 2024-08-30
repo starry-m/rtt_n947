@@ -108,12 +108,6 @@
 #define RT_USING_SENSOR_CMD
 #define RT_USING_PIN
 #define RT_USING_HWTIMER
-
-// #define BSP_USING_SW_I2C
-// #define BSP_USING_SW_I2C0
-// #define BSP_SW_I2C0_SCL_PIN 0x21
-// #define BSP_SW_I2C0_SDA_PIN 0x20
-
 /* end of Device Drivers */
 
 /* C/C++ and POSIX layer */
@@ -292,6 +286,9 @@
 
 /* tools packages */
 
+#define PKG_USING_UMCN
+#define PKG_USING_UMCN_LATEST_VERSION
+#define UMCN_USING_DEMO
 /* end of tools packages */
 
 /* system packages */
@@ -382,7 +379,7 @@
 #define RTDUINO_TINY_MODE
 #define RTDUINO_SUPPORT_HIGH_PRECISION_MICROS
 #define RTDUINO_USING_WIRE
-#define RTDUINO_DEFAULT_IIC_BUS_NAME "swi2c0"
+#define RTDUINO_DEFAULT_IIC_BUS_NAME "i2c1"
 #define RTDUINO_WIRE_BUFFER_LENGTH 32
 #define PKG_USING_RTDUINO_LATEST_VERSION
 

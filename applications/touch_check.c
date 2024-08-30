@@ -15,6 +15,12 @@
 #include <rtthread.h>
 
 #include <stdbool.h>
+
+#include <uMCN.h>
+#include "board_value.h"
+MCN_DEFINE(touch_topic, sizeof(touch_topic_t));
+
+touch_topic_t touch_data;
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -218,7 +224,7 @@ MSH_CMD_EXPORT(touch_main, touch main);
 static void thread_touch_entry(void *parameter)
 {
     rt_uint32_t e;
-
+		uint8_t last_touch=0;
     touch_main();
 	// rt_event_send(&touch_event, EVENT_FLAG5);
     while (1)
@@ -233,10 +239,20 @@ static void thread_touch_entry(void *parameter)
             //            LED1_TOGGLE(); /* Toggle the touch event indicating LED */
             // rt_event_send(&touch_event, EVENT_FLAG3);
             rt_kprintf("touch pressed\r\n");
+            touch_data.pressed=1;
             // s_tsiInProgress = false;
         }
-//				else
-//					rt_kprintf("no touch pressed\r\n");
+        else
+        {
+//            rt_kprintf("no touch pressed\r\n");
+            touch_data.pressed=0;
+        }
+				if(last_touch !=touch_data.pressed)
+				{
+					last_touch =touch_data.pressed;
+					mcn_publish(MCN_HUB(touch_topic), &touch_data);	
+				}
+        
         TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
 				TSI_StartSoftwareTrigger(APP_TSI);
         rt_thread_mdelay(500);
@@ -251,6 +267,17 @@ static void thread_touch_entry(void *parameter)
         
     }
 }
+static int  touch_data_topic_echo(void *param)
+{
+    static  touch_topic_t data;
+    if (mcn_copy_from_hub((McnHub *)param, &data) == RT_EOK)
+    {
+        // LOG_I("sensor_Color_r=%d, sensor_Color_g=%d,sensor_Color_b=%d,sensor_Color_c=%d,temperature=%d",\
+        // data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature/256.0));
+        return 0;
+    }
+    return -1;
+}
 
 int thread_touch_start(void)
 {
@@ -263,6 +290,11 @@ int thread_touch_start(void)
 //        rt_kprintf("init touch event failed.\n");
 //        return -1;
 //    }
+
+        mcn_advertise(MCN_HUB( touch_topic),  touch_data_topic_echo);
+
+
+
     tid_touch = rt_thread_create("th touch", thread_touch_entry, RT_NULL, 1024, 9, 10);
     /* 如果获得线程控制块，启动这个线程 */
     if (tid_touch != RT_NULL)

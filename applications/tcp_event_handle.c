@@ -11,6 +11,12 @@
 #define DBG_TAG "app.tcp"
 #define DBG_LVL DBG_INFO
 #include <rtdbg.h>
+#include <uMCN.h>
+#include "board_value.h"
+static McnNode_t color_temp_nod;
+MCN_DECLARE(color_temp);
+static McnNode_t touch_nod;
+MCN_DECLARE(touch_topic);
 
 static const char send_data[] = "This is TCP Client from RT-Thread.\r\n"; /* 发送用到的数据 */
 
@@ -145,52 +151,72 @@ static void tcpclient_tx_thread(void *parameter)
     static rt_err_t result;
     int ret;
     /* 永久方式等待信号量，获取到信号量，则执行number自加的操作 */
-    result = rt_sem_take(&connected_sem, RT_WAITING_FOREVER);
-    if (result != RT_EOK)
-    {
-        rt_kprintf("thread2 take a dynamic semaphore, failed.\n");
-        return;
-    }
-    else
-    {
-        rt_kprintf("start tcp tx thread\r\n");
-    }
+    // result = rt_sem_take(&connected_sem, RT_WAITING_FOREVER);
+    // if (result != RT_EOK)
+    // {
+    //     rt_kprintf("thread2 take a dynamic semaphore, failed.\n");
+    //     return;
+    // }
+    // else
+    // {
+    //     rt_kprintf("start tcp tx thread\r\n");
+    // }
     rt_uint32_t send_tick = 0;
     rt_uint8_t send_temp[20];
+    touch_topic_t t_data;
+    apds_temp_topic_t data;
     while (1)
     {
+            /* synchronous wait until topic received */
+    if (mcn_poll(color_temp_nod)) {
+        
+        /* copy topic data */
+        mcn_copy(MCN_HUB(color_temp), color_temp_nod, &data);
+        // rt_kprintf("get sync topic, tick=%ld\n", data.tick);
+        LOG_I("sensor_Color_r=%d, sensor_Color_g=%d,sensor_Color_b=%d,sensor_Color_c=%d,temperature=%d.%d",\
+        data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100);
+      
+    }
+    if (mcn_poll(touch_nod)){
+        
+        mcn_copy(MCN_HUB(touch_topic), touch_nod, &t_data);
+        LOG_I("touch status=%d", t_data.pressed);   
+    }
         rt_thread_mdelay(1000);
-        rt_sprintf(send_temp, "第%d次发送\r\n", send_tick++);
-        //        rt_kprintf(" 发送数据到connected socket\r\n");
-        /* 发送数据到connected socket */
-        ret = send(connected, send_temp, strlen(send_temp), 0);
-        if (ret < 0)
-        {
-            /* 发送失败，关闭这个连接 */
-            closesocket(connected);
-            rt_kprintf("\nsend error,close the socket.\r\n");
-            break;
-        }
-        else if (ret == 0)
-        {
-            /* 打印send函数返回值为0的警告信息 */
-            rt_kprintf("\n Send warning,send function return 0.\r\n");
-        }
+        // rt_sprintf(send_temp, "第%d次发送\r\n", send_tick++);
+        // //        rt_kprintf(" 发送数据到connected socket\r\n");
+        // /* 发送数据到connected socket */
+        // ret = send(connected, send_temp, strlen(send_temp), 0);
+        // if (ret < 0)
+        // {
+        //     /* 发送失败，关闭这个连接 */
+        //     closesocket(connected);
+        //     rt_kprintf("\nsend error,close the socket.\r\n");
+        //     break;
+        // }
+        // else if (ret == 0)
+        // {
+        //     /* 打印send函数返回值为0的警告信息 */
+        //     rt_kprintf("\n Send warning,send function return 0.\r\n");
+        // }
     }
 }
 static rt_thread_t tid_tcp = RT_NULL;
 static rt_thread_t tid_tcp_tx = RT_NULL;
 int thread_tcp_event_start(void)
 {
+    color_temp_nod = mcn_subscribe(MCN_HUB(color_temp), RT_NULL, RT_NULL);
+    touch_nod = mcn_subscribe(MCN_HUB(touch_topic), RT_NULL, RT_NULL);
+
     /* 初始化信号量 */
     rt_sem_init(&connected_sem, "con_sem", 0, RT_IPC_FLAG_FIFO);
 
-    tid_tcp = rt_thread_create("th tcp r", tcpclient_rx_thread, RT_NULL, 2048, 24, 100);
+    tid_tcp = rt_thread_create("th tcp r", tcpclient_rx_thread, RT_NULL, 2048, 16, 10);
     /* 如果获得线程控制块，启动这个线程 */
     if (tid_tcp != RT_NULL)
         rt_thread_startup(tid_tcp);
 
-    tid_tcp_tx = rt_thread_create("th tcp t", tcpclient_tx_thread, RT_NULL, 2048, 23, 100);
+    tid_tcp_tx = rt_thread_create("th tcp t", tcpclient_tx_thread, RT_NULL, 2048, 15, 10);
     /* 如果获得线程控制块，启动这个线程 */
     if (tid_tcp_tx != RT_NULL)
         rt_thread_startup(tid_tcp_tx);
@@ -198,5 +224,5 @@ int thread_tcp_event_start(void)
     return 0;
 }
 
-//INIT_APP_EXPORT(thread_tcp_event_start);
+INIT_APP_EXPORT(thread_tcp_event_start);
 // MSH_CMD_EXPORT(thread_tcp_event_start, a tcp client);
