@@ -33,7 +33,7 @@
 #define ST7735S_SPI_DEVICE "spi10"
 #define ST7735S_DC_PIN ((0*32)+28)  /*寄存器或数据引脚*/
 #define ST7735S_RESET_PIN GET_PIN(B, 11) /*复位引脚*/
-#define ST7735S_CS_PIN ((0*32)+27)    /*使能引脚*/
+#define ST7735S_CS_PIN ((2*32)+5)    /*使能引脚*/
 #define ST7735S_BLK_PIN GET_PIN(A,8)  // 背光引脚
 
 //扫描方向定义--扫描方式有不同规格，可能定义不左右和上下的参照方向不同，总结方式，只有一下八种

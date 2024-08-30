@@ -50,12 +50,12 @@ int main(void)
     rt_kprintf("using gcc, version: %d.%d\n", __GNUC__, __GNUC_MINOR__);
 #endif
 
-		rt_pin_mode(LEDR_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
-		rt_pin_mode(LEDG_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
+    rt_pin_mode(LEDR_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
+    rt_pin_mode(LEDG_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
     rt_pin_mode(LEDB_PIN, PIN_MODE_OUTPUT); /* Set GPIO as Output */
-		rt_pin_write(LEDR_PIN, PIN_HIGH);
-		rt_pin_write(LEDG_PIN, PIN_HIGH);
-		rt_pin_write(LEDB_PIN, PIN_HIGH);
+    rt_pin_write(LEDR_PIN, PIN_HIGH);
+    rt_pin_write(LEDG_PIN, PIN_HIGH);
+    rt_pin_write(LEDB_PIN, PIN_HIGH);
     rt_pin_mode(BUTTON_PIN, PIN_MODE_INPUT_PULLUP);
     rt_pin_attach_irq(BUTTON_PIN, PIN_IRQ_MODE_FALLING, sw_pin_cb, RT_NULL);
     rt_pin_irq_enable(BUTTON_PIN, 1);

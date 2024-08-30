@@ -243,7 +243,7 @@ int rt_hw_spi_init(void)
 
         lpspi_master_config_t masterConfig;
         LPSPI_MasterGetDefaultConfig(&masterConfig);
-        masterConfig.baudRate = 24*1000*1000;
+        masterConfig.baudRate = 48*1000*1000;
         masterConfig.pcsToSckDelayInNanoSec        = 1000000000U / masterConfig.baudRate * 1U;
         masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000U / masterConfig.baudRate * 1U;
         masterConfig.betweenTransferDelayInNanoSec = 1000000000U / masterConfig.baudRate * 1U;

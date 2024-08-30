@@ -133,6 +133,6 @@ int st7735s_test(void)
     return RT_EOK;
 }
 
-//INIT_APP_EXPORT(st7735s_test);
+INIT_APP_EXPORT(st7735s_test);
 // MSH_CMD_EXPORT(st7735s_init, st7735s_  init);
 
