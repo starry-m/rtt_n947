@@ -108,10 +108,11 @@
 #define RT_USING_SENSOR_CMD
 #define RT_USING_PIN
 #define RT_USING_HWTIMER
-#define BSP_USING_SW_I2C
-#define BSP_USING_SW_I2C0
-#define BSP_SW_I2C0_SCL_PIN 0x21
-#define BSP_SW_I2C0_SDA_PIN 0x20
+
+// #define BSP_USING_SW_I2C
+// #define BSP_USING_SW_I2C0
+// #define BSP_SW_I2C0_SCL_PIN 0x21
+// #define BSP_SW_I2C0_SDA_PIN 0x20
 
 /* end of Device Drivers */
 

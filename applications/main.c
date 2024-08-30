@@ -24,7 +24,8 @@ static void sw_pin_cb(void *args);
 // static struct rt_i2c_bus_device *i2c_bus = RT_NULL;     /* I2C总线设备句柄 */
 // rt_uint8_t read_buff[2];
 // #define P3T1755_ADDR 0X48
-
+/* 邮箱控制块 */
+//extern struct rt_mailbox mb_temp;
 int main(void)
 {
 #if defined(__CC_ARM)
@@ -67,15 +68,25 @@ int main(void)
     //
     //
     //    }
-		rt_uint32_t count=0;
+    rt_uint32_t count = 0;
+
+    char *str;
+
     while (1)
     {
-         rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
-        rt_thread_mdelay(600); /* Delay 500mS */
-			count++;
-//			rt_kprintf("main runnig\r\n");
-         rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
-        rt_thread_mdelay(600); /* Delay 500mS */
+        rt_pin_write(LEDB_PIN, PIN_HIGH); /* Set GPIO output 1 */
+        rt_thread_mdelay(600);            /* Delay 500mS */
+        // count++;
+        // //			rt_kprintf("main runnig\r\n");
+         rt_pin_write(LEDB_PIN, PIN_LOW); /* Set GPIO output 0 */
+         rt_thread_mdelay(600);           /* Delay 500mS */
+
+//        if (rt_mb_recv(&mb_temp, (rt_uint32_t *)&str, RT_WAITING_FOREVER) == RT_EOK)
+//        {
+//            rt_kprintf("thread main: get a mail from mailbox, the content:%s\n", str);
+//            /* 延时100ms */
+//            rt_thread_mdelay(100);
+//        }
     }
 }
 

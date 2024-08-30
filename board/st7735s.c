@@ -155,7 +155,7 @@ int LCD_Init(void) {
      return RT_EOK;
 }
 
-INIT_COMPONENT_EXPORT(LCD_Init);
+//INIT_COMPONENT_EXPORT(LCD_Init);
 
 
 

@@ -91,7 +91,7 @@ void Adafruit_APDS9960::enable(boolean en) {
 boolean Adafruit_APDS9960::begin(uint16_t iTimeMS, apds9960AGain_t aGain,
                                  uint8_t addr, TwoWire *theWire) {
  rt_kprintf("Adafruit_APDS9960::start\r\n");
- i2c_adps.begin(32,33);
+ i2c_adps.begin(48,49);
   // if (i2c_dev)
   //   delete i2c_dev;
   // i2c_dev = new Adafruit_I2CDevice(addr, theWire);
@@ -732,4 +732,22 @@ void Adafruit_APDS9960::write(uint8_t reg, uint8_t *buf, uint8_t num) {
   i2c_adps.write(reg);
   i2c_adps.write(buf, num);
   i2c_adps.endTransmission();
+}
+
+
+uint8_t Adafruit_APDS9960::read_P3T1755(uint8_t *buf) {
+  rt_uint8_t ret = 0;
+  // buf[0] = reg;
+  // i2c_dev->write_then_read(buf, 1, buf, num);
+  i2c_adps.beginTransmission(0x48);
+  i2c_adps.write(0);
+  i2c_adps.endTransmission();
+  i2c_adps.requestFrom(0x48, 2);
+  while (i2c_adps.available()) {
+      buf[ret] = i2c_adps.read();
+      ret++;
+  }
+  // i2c_adps.endTransmission();
+  
+  return ret;
 }

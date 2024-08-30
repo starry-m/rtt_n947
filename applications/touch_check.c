@@ -66,8 +66,8 @@ void touch_main(void)
 {
     volatile uint32_t i = 0;
     tsi_selfCap_config_t tsiConfig_selfCap;
-    lptmr_config_t lptmrConfig;
-    memset((void *)&lptmrConfig, 0, sizeof(lptmrConfig));
+    // lptmr_config_t lptmrConfig;
+    // memset((void *)&lptmrConfig, 0, sizeof(lptmrConfig));
 
     /* Initialize standard SDK demo application pins */
     /* Enables the clock for INPUTMUX: Enables clock */
@@ -91,21 +91,21 @@ void touch_main(void)
     // LED2_INIT();
 
     /* Configure LPTMR */
-    LPTMR_GetDefaultConfig(&lptmrConfig);
+    // LPTMR_GetDefaultConfig(&lptmrConfig);
     /* TSI default hardware configuration for self-cap mode */
     TSI_GetSelfCapModeDefaultConfig(&tsiConfig_selfCap);
 
     /* Initialize the LPTMR */
-    LPTMR_Init(LPTMR0, &lptmrConfig);
+    // LPTMR_Init(LPTMR0, &lptmrConfig);
     /* Initialize the TSI */
     TSI_InitSelfCapMode(APP_TSI, &tsiConfig_selfCap);
     /* Enable noise cancellation function */
     TSI_EnableNoiseCancellation(APP_TSI, true);
 
     /* Set timer period */
-    LPTMR_SetTimerPeriod(LPTMR0, USEC_TO_COUNT(LPTMR_USEC_COUNT, LPTMR_SOURCE_CLOCK));
+    // LPTMR_SetTimerPeriod(LPTMR0, USEC_TO_COUNT(LPTMR_USEC_COUNT, LPTMR_SOURCE_CLOCK));
 
-    NVIC_EnableIRQ(TSI0_IRQn);
+    // NVIC_EnableIRQ(TSI0_IRQn);
     TSI_EnableModule(APP_TSI, true); /* Enable module */
 
     rt_kprintf("\r\nTSI_V6 Self-Cap mode Example Start!\r\n");
@@ -119,16 +119,20 @@ void touch_main(void)
     }
 
     /********** SOFTWARE TRIGGER SCAN USING POLLING METHOD ********/
-//     rt_kprintf("\r\nNOW, comes to the software trigger scan using polling method!\r\n");
-//     TSI_EnableHardwareTriggerScan(APP_TSI, false); /* Enable software trigger scan */
-//     TSI_DisableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
-//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
-//     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
-//     TSI_StartSoftwareTrigger(APP_TSI);
-//     while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
-//     {
-//     }
-//     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
+    rt_kprintf("\r\nNOW, comes to the software trigger scan using polling method!\r\n");
+    TSI_EnableHardwareTriggerScan(APP_TSI, false); /* Enable software trigger scan */
+    TSI_DisableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
+    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+    TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_1);
+    TSI_StartSoftwareTrigger(APP_TSI);
+
+    // while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
+    // {
+    // }
+    // rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
+
+    // TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
+
 // #if (defined(PAD_TSI_ELECTRODE_2_ENABLED) && PAD_TSI_ELECTRODE_2_ENABLED)
 //     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
 //     TSI_SetSelfCapMeasuredChannel(APP_TSI, BOARD_TSI_ELECTRODE_2);
@@ -138,7 +142,7 @@ void touch_main(void)
 //     }
 //     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
 // #endif
-//     TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
+
 
 //     /********** SOFTWARE TRIGGER SCAN USING INTERRUPT METHOD ********/
 //     rt_kprintf("\r\nNOW, comes to the software trigger scan using interrupt method!\r\n");
@@ -163,18 +167,18 @@ void touch_main(void)
 //     rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_2, TSI_GetCounter(APP_TSI));
 // #endif
     /********** HARDWARE TRIGGER SCAN ********/
-    rt_kprintf("\r\nNOW, comes to the hardware trigger scan method!\r\n");
-    rt_kprintf("After running, touch pad %s each time, you will see LED toggles.\r\n", PAD_TSI_ELECTRODE_1_NAME);
-    TSI_EnableModule(APP_TSI, false);
-    TSI_EnableHardwareTriggerScan(APP_TSI, true);
-    TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
-    TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
+    // rt_kprintf("\r\nNOW, comes to the hardware trigger scan method!\r\n");
+    // rt_kprintf("After running, touch pad %s each time, you will see LED toggles.\r\n", PAD_TSI_ELECTRODE_1_NAME);
+    // TSI_EnableModule(APP_TSI, false);
+    // TSI_EnableHardwareTriggerScan(APP_TSI, true);
+    // TSI_EnableInterrupts(APP_TSI, kTSI_EndOfScanInterruptEnable);
+    // TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag);
 
-    TSI_SetSelfCapMeasuredChannel(APP_TSI,
-                                  BOARD_TSI_ELECTRODE_1); /* Select BOARD_TSI_ELECTRODE_1 as detecting electrode. */
-    TSI_EnableModule(APP_TSI, true);
-    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Lptmr0ToTsiTrigger);
-    LPTMR_StartTimer(LPTMR0); /* Start LPTMR triggering */
+    // TSI_SetSelfCapMeasuredChannel(APP_TSI,
+    //                               BOARD_TSI_ELECTRODE_1); /* Select BOARD_TSI_ELECTRODE_1 as detecting electrode. */
+    // TSI_EnableModule(APP_TSI, true);
+    // INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Lptmr0ToTsiTrigger);
+    // LPTMR_StartTimer(LPTMR0); /* Start LPTMR triggering */
 
     // while (1)
     // {
@@ -186,7 +190,7 @@ static rt_thread_t tid_touch = RT_NULL;
 #define EVENT_FLAG3 (1 << 3)
 #define EVENT_FLAG5 (1 << 5)
 /* 事件控制块 */
-static struct rt_event touch_event;
+// static struct rt_event touch_event;
 void TSI0_IRQHandler(void)
 {
 #if BOARD_TSI_ELECTRODE_1 > 15
@@ -199,7 +203,7 @@ void TSI0_IRQHandler(void)
         if (TSI_GetCounter(APP_TSI) > (uint16_t)(buffer.calibratedData[BOARD_TSI_ELECTRODE_1] + TOUCH_DELTA_VALUE))
         {
             //            LED1_TOGGLE(); /* Toggle the touch event indicating LED */
-            rt_event_send(&touch_event, EVENT_FLAG3);
+            // rt_event_send(&touch_event, EVENT_FLAG3);
 
             s_tsiInProgress = false;
         }
@@ -216,34 +220,50 @@ static void thread_touch_entry(void *parameter)
     rt_uint32_t e;
 
     touch_main();
-	 rt_event_send(&touch_event, EVENT_FLAG5);
+	// rt_event_send(&touch_event, EVENT_FLAG5);
     while (1)
     {
-				rt_thread_mdelay(500);
-        /* 第一次接收事件，事件3或事件5任意一个可以触发线程1，接收完后清除事件标志 */
-        if (rt_event_recv(&touch_event, (EVENT_FLAG3 | EVENT_FLAG5), RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR, 500, &e) ==
-            RT_EOK)
+        while (!(TSI_GetStatusFlags(APP_TSI) & kTSI_EndOfScanFlag))
         {
-            rt_kprintf("thread touch: OR recv event 0x%x\n", e);
-					if(EVENT_FLAG3==e)
-            rt_kprintf("touch pressed\r\n");
+					 rt_thread_mdelay(10);
         }
+        // rt_kprintf("Channel %d Normal mode counter is: %d \r\n", BOARD_TSI_ELECTRODE_1, TSI_GetCounter(APP_TSI));
+        if (TSI_GetCounter(APP_TSI) > (uint16_t)(buffer.calibratedData[BOARD_TSI_ELECTRODE_1] + TOUCH_DELTA_VALUE))
+        {
+            //            LED1_TOGGLE(); /* Toggle the touch event indicating LED */
+            // rt_event_send(&touch_event, EVENT_FLAG3);
+            rt_kprintf("touch pressed\r\n");
+            // s_tsiInProgress = false;
+        }
+//				else
+//					rt_kprintf("no touch pressed\r\n");
+        TSI_ClearStatusFlags(APP_TSI, kTSI_EndOfScanFlag | kTSI_OutOfRangeFlag);
+				TSI_StartSoftwareTrigger(APP_TSI);
+        rt_thread_mdelay(500);
+        /* 第一次接收事件，事件3或事件5任意一个可以触发线程1，接收完后清除事件标志 */
+        // if (rt_event_recv(&touch_event, (EVENT_FLAG3 | EVENT_FLAG5), RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR, 500, &e) ==
+        //     RT_EOK)
+        // {
+        //     rt_kprintf("thread touch: OR recv event 0x%x\n", e);
+		// 			if(EVENT_FLAG3==e)
+        //     rt_kprintf("touch pressed\r\n");
+        // }
         
     }
 }
 
 int thread_touch_start(void)
 {
-    rt_err_t result;
+//    rt_err_t result;
 
-    /* 初始化事件对象 */
-    result = rt_event_init(&touch_event, "tou event", RT_IPC_FLAG_FIFO);
-    if (result != RT_EOK)
-    {
-        rt_kprintf("init touch event failed.\n");
-        return -1;
-    }
-    tid_touch = rt_thread_create("th touch", thread_touch_entry, RT_NULL, 1024, 25, 10);
+//    /* 初始化事件对象 */
+//    result = rt_event_init(&touch_event, "tou event", RT_IPC_FLAG_FIFO);
+//    if (result != RT_EOK)
+//    {
+//        rt_kprintf("init touch event failed.\n");
+//        return -1;
+//    }
+    tid_touch = rt_thread_create("th touch", thread_touch_entry, RT_NULL, 1024, 9, 10);
     /* 如果获得线程控制块，启动这个线程 */
     if (tid_touch != RT_NULL)
         rt_thread_startup(tid_touch);

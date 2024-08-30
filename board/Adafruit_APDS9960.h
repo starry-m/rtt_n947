@@ -220,7 +220,7 @@ public:
 
   // turn on/off elements
   void enable(boolean en = true);
-
+  uint8_t read_P3T1755(uint8_t *buf);
 private:
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
 

@@ -198,5 +198,5 @@ int thread_tcp_event_start(void)
     return 0;
 }
 
-INIT_APP_EXPORT(thread_tcp_event_start);
+//INIT_APP_EXPORT(thread_tcp_event_start);
 // MSH_CMD_EXPORT(thread_tcp_event_start, a tcp client);
