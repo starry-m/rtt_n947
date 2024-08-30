@@ -19,13 +19,44 @@ static McnNode_t touch_nod;
 MCN_DECLARE(touch_topic);
 
 static const char send_data[] = "This is TCP Client from RT-Thread.\r\n"; /* 发送用到的数据 */
+static char send_status_data[100];
+static uint8_t send_length;
 static rt_thread_t tid_tcp = RT_NULL;
-static rt_thread_t tid_tcp_tx = RT_NULL;
-int connected;
+static rt_thread_t tid_data_sync = RT_NULL;
+
+static  touch_topic_t t_data;
+static  apds_temp_topic_t data;
+
+
 /* 用于接收消息的信号量 */
 static struct rt_semaphore connected_sem;
 
-static void tcpclient_rx_thread(void *parameter)
+/*
+rgb=000
+
+*/
+static uint8_t update_led_status;
+static char temp_buffer[10];
+static uint8_t recv_data_jude(char *str)
+{
+    char *ptr_splice;
+    if(NULL!=rt_strstr(str,"get status"))
+    {
+        return 1;
+    }
+    else if(NULL!=rt_strstr(str,"set status"))
+    {
+        ptr_splice=strchr(str,':');
+        rt_strcpy(temp_buffer,ptr_splice+1);
+        LOG_I("get from pc:%s",temp_buffer);
+        update_led_status=atoi(temp_buffer);
+        LOG_I("update_led_status=%d",update_led_status);
+        return 2;
+    }
+    return 0;
+}
+
+static void tcpclient_handle_thread(void *parameter)
 {
     char *recv_data; /* 用于接收的指针，后面会做一次动态分配以请求可用内存 */
     socklen_t sin_size;
@@ -33,8 +64,7 @@ static void tcpclient_rx_thread(void *parameter)
     struct sockaddr_in server_addr, client_addr;
     rt_bool_t stop = RT_FALSE; /* 停止标志 */
     int ret;
-    uint8_t lost_connect=0;
-    rt_err_t thread_err;
+    int connected;
     recv_data = rt_malloc(BUFSZ + 1); /* 分配接收用的数据缓冲 */
     if (recv_data == RT_NULL)
     {
@@ -52,8 +82,6 @@ static void tcpclient_rx_thread(void *parameter)
         rt_free(recv_data);
         return;
     }
-    const struct timeval tv = {30, 0};        
-    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     /* 初始化服务端地址 */
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(5000); /* 服务端工作的端口 */
@@ -97,56 +125,26 @@ static void tcpclient_rx_thread(void *parameter)
 
         /* 接受返回的client_addr指向了客户端的地址信息 */
         rt_kprintf("I got a connection from (%s , %d)\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-        rt_sem_release(&connected_sem);
-        if(lost_connect)
-        {
-            lost_connect=0;
-            rt_thread_resume(tid_tcp_tx);
-        }
+//        rt_sem_release(&connected_sem);
+
         
         /* 客户端连接的处理 */
         while (1)
         {
+            
+
             /* 从connected socket中接收数据，接收buffer是1024大小，但并不一定能够收到1024大小的数据 */
             bytes_received = recv(connected, recv_data, BUFSZ, 0);
             if (bytes_received < 0)
             {
                 /* 接收失败，关闭这个connected socket */
-                if(tid_tcp_tx->stat == RT_THREAD_READY)
-                {
-                    thread_err=rt_thread_suspend(tid_tcp_tx); 
-                    if( RT_EOK==thread_err ){
-                        rt_kprintf("tcp_tx closed successful\r\n");
-                    }
-                    else
-                    {
-                        rt_kprintf("tcp_tx closed failed\r\n");
-
-                    }
-                }
-                
-
                 closesocket(connected);
-                lost_connect=1;
                 break;
             }
             else if (bytes_received == 0)
             {
                 /* 打印recv函数返回值为0的警告信息 */
                 rt_kprintf("\nReceived warning,recv function return 0.\r\n");
-                 if(tid_tcp_tx->stat == RT_THREAD_READY)
-                {
-                    thread_err=rt_thread_suspend(tid_tcp_tx); 
-                    if( RT_EOK==thread_err ){
-                        rt_kprintf("tcp_tx closed successful\r\n");
-                    }
-                    else
-                    {
-                        rt_kprintf("tcp_tx closed failed\r\n");
-
-                    }
-                }
-                lost_connect=1;
                 closesocket(connected);
                 
                 break;
@@ -172,6 +170,25 @@ static void tcpclient_rx_thread(void *parameter)
                 /* 在控制终端显示收到的数据 */
                 rt_kprintf("RECEIVED DATA = %s \n", recv_data);
             }
+            if(1==recv_data_jude(recv_data))
+            {
+								LOG_I(send_status_data);
+                /* 发送数据到connected socket */
+                ret = send(connected, send_status_data, strlen(send_status_data), 0);
+                if (ret < 0)
+                {
+                    /* 发送失败，关闭这个连接 */
+                    closesocket(connected);
+                    rt_kprintf("\nsend error,close the socket.\r\n");
+                    break;
+                }
+                else if (ret == 0)
+                {
+                    /* 打印send函数返回值为0的警告信息 */
+                    rt_kprintf("\n Send warning,send function return 0.\r\n");
+                }
+            }
+           
         }
     }
 
@@ -183,25 +200,24 @@ static void tcpclient_rx_thread(void *parameter)
 
     return;
 }
-static void tcpclient_tx_thread(void *parameter)
+static void data_sync_thread(void *parameter)
 {
     static rt_err_t result;
     int ret;
     /* 永久方式等待信号量，获取到信号量，则执行number自加的操作 */
-    result = rt_sem_take(&connected_sem, RT_WAITING_FOREVER);
-    if (result != RT_EOK)
-    {
-        rt_kprintf("thread2 take a dynamic semaphore, failed.\n");
-        return;
-    }
-    else
-    {
-        rt_kprintf("start tcp tx thread\r\n");
-    }
+//    result = rt_sem_take(&connected_sem, RT_WAITING_FOREVER);
+//    if (result != RT_EOK)
+//    {
+//        rt_kprintf("thread2 take a dynamic semaphore, failed.\n");
+//        return;
+//    }
+//    else
+//    {
+//        rt_kprintf("start tcp tx thread\r\n");
+//    }
     rt_uint32_t send_tick = 0;
     rt_uint8_t send_temp[20];
-    touch_topic_t t_data;
-    apds_temp_topic_t data;
+
     while (1)
     {
             /* synchronous wait until topic received */
@@ -209,8 +225,8 @@ static void tcpclient_tx_thread(void *parameter)
         
         /* copy topic data */
         mcn_copy(MCN_HUB(color_temp), color_temp_nod, &data);
-        // rt_kprintf("get sync topic, tick=%ld\n", data.tick);
-        // LOG_I("sensor_Color_r=%d, sensor_Color_g=%d,sensor_Color_b=%d,sensor_Color_c=%d,temperature=%d.%d",\
+         // rt_kprintf("get sync topic, tick=%ld\n", data.tick);
+         //LOG_I("sensor_Color_r=%d, sensor_Color_g=%d,sensor_Color_b=%d,sensor_Color_c=%d,temperature=%d.%d",\
         // data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100);
       
     }
@@ -219,33 +235,13 @@ static void tcpclient_tx_thread(void *parameter)
         mcn_copy(MCN_HUB(touch_topic), touch_nod, &t_data);
         LOG_I("touch status=%d", t_data.pressed);   
     }
+				rt_sprintf(send_status_data,"r=%d,g=%d,b=%d,c=%d,temp=%d.%d,touch=%d,key=%d \n\0",\
+        data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100,t_data.pressed,1);
+      
     rt_thread_mdelay(1000);
-    rt_sprintf(send_temp, "第%d次发送\r\n", send_tick++);
+    // rt_sprintf(send_temp, "第%d次发送\r\n", send_tick++);
     // //        rt_kprintf(" 发送数据到connected socket\r\n");
-    /* 发送数据到connected socket */
-    ret = send(connected, send_temp, strlen(send_temp), 0);
-    if (ret < 0)
-    {
-        /* 发送失败，关闭这个连接 */
-        closesocket(connected);
-        rt_kprintf("\nsend error,close the socket.\r\n");
-        result = rt_sem_take(&connected_sem, RT_WAITING_FOREVER);
-        if (result != RT_EOK)
-        {
-            LOG_I("take a dynamic semaphore, failed.\n");
-            return;
-        }
-        else
-        {
-            LOG_I("re start tcp tx thread\r\n");
-        }
-        // break;
-    }
-    else if (ret == 0)
-    {
-        /* 打印send函数返回值为0的警告信息 */
-        rt_kprintf("\n Send warning,send function return 0.\r\n");
-    }
+  
     }
 }
 
@@ -257,15 +253,15 @@ int thread_tcp_event_start(void)
     /* 初始化信号量 */
     rt_sem_init(&connected_sem, "con_sem", 0, RT_IPC_FLAG_FIFO);
 
-    tid_tcp = rt_thread_create("th tcp r", tcpclient_rx_thread, RT_NULL, 2048, 14, 10);
+    tid_tcp = rt_thread_create("th tcp", tcpclient_handle_thread, RT_NULL, 2048, 14, 10);
     /* 如果获得线程控制块，启动这个线程 */
     if (tid_tcp != RT_NULL)
         rt_thread_startup(tid_tcp);
 
-    tid_tcp_tx = rt_thread_create("th tcp t", tcpclient_tx_thread, RT_NULL, 2048, 16, 10);
+    tid_data_sync = rt_thread_create("th sync", data_sync_thread, RT_NULL, 2048, 16, 10);
     /* 如果获得线程控制块，启动这个线程 */
-    if (tid_tcp_tx != RT_NULL)
-        rt_thread_startup(tid_tcp_tx);
+    if (tid_data_sync != RT_NULL)
+        rt_thread_startup(tid_data_sync);
 
     return 0;
 }
