@@ -17,6 +17,12 @@ static McnNode_t color_temp_nod;
 MCN_DECLARE(color_temp);
 static McnNode_t touch_nod;
 MCN_DECLARE(touch_topic);
+static McnNode_t key_nod;
+MCN_DECLARE(key_topic);
+
+MCN_DEFINE(led_topic, sizeof(led_topic_t));
+static led_topic_t led_data;
+
 
 static const char send_data[] = "This is TCP Client from RT-Thread.\r\n"; /* 发送用到的数据 */
 static char send_status_data[100];
@@ -26,7 +32,7 @@ static rt_thread_t tid_data_sync = RT_NULL;
 
 static  touch_topic_t t_data;
 static  apds_temp_topic_t data;
-
+static  key_topic_t k_data;
 
 /* 用于接收消息的信号量 */
 static struct rt_semaphore connected_sem;
@@ -37,6 +43,17 @@ rgb=000
 */
 static uint8_t update_led_status;
 static char temp_buffer[10];
+
+static int  led_topic_echo(void *param)
+{
+    static  led_topic_t data;
+    if (mcn_copy_from_hub((McnHub *)param, &data) == RT_EOK)
+    {
+         return 0;
+    }
+    return -1;
+}
+
 static uint8_t recv_data_jude(char *str)
 {
     char *ptr_splice;
@@ -51,6 +68,8 @@ static uint8_t recv_data_jude(char *str)
         LOG_I("get from pc:%s",temp_buffer);
         update_led_status=atoi(temp_buffer);
         LOG_I("update_led_status=%d",update_led_status);
+        led_data.led_status=update_led_status;
+        mcn_publish(MCN_HUB(led_topic), &led_data);	
         return 2;
     }
     return 0;
@@ -222,7 +241,6 @@ static void data_sync_thread(void *parameter)
     {
             /* synchronous wait until topic received */
     if (mcn_poll(color_temp_nod)) {
-        
         /* copy topic data */
         mcn_copy(MCN_HUB(color_temp), color_temp_nod, &data);
          // rt_kprintf("get sync topic, tick=%ld\n", data.tick);
@@ -231,9 +249,12 @@ static void data_sync_thread(void *parameter)
       
     }
     if (mcn_poll(touch_nod)){
-        
         mcn_copy(MCN_HUB(touch_topic), touch_nod, &t_data);
         LOG_I("touch status=%d", t_data.pressed);   
+    }
+    if (mcn_poll(key_nod)){
+        mcn_copy(MCN_HUB(key_topic), key_nod, &k_data);
+        LOG_I("key pressed status=%d", k_data.pressed);   
     }
 				rt_sprintf(send_status_data,"r=%d,g=%d,b=%d,c=%d,temp=%d.%d,touch=%d,key=%d \n\0",\
         data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100,t_data.pressed,1);
@@ -249,7 +270,9 @@ int thread_tcp_event_start(void)
 {
     color_temp_nod = mcn_subscribe(MCN_HUB(color_temp), RT_NULL, RT_NULL);
     touch_nod = mcn_subscribe(MCN_HUB(touch_topic), RT_NULL, RT_NULL);
+    key_nod = mcn_subscribe(MCN_HUB(key_topic), RT_NULL, RT_NULL);
 
+    mcn_advertise(MCN_HUB( led_topic),  led_topic_echo);
     /* 初始化信号量 */
     rt_sem_init(&connected_sem, "con_sem", 0, RT_IPC_FLAG_FIFO);
 

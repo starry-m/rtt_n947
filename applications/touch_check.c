@@ -20,7 +20,7 @@
 #include "board_value.h"
 MCN_DEFINE(touch_topic, sizeof(touch_topic_t));
 
-touch_topic_t touch_data;
+static touch_topic_t touch_data;
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -224,7 +224,7 @@ MSH_CMD_EXPORT(touch_main, touch main);
 static void thread_touch_entry(void *parameter)
 {
     rt_uint32_t e;
-		uint8_t last_touch=0;
+    uint8_t last_touch=0;
     touch_main();
 	// rt_event_send(&touch_event, EVENT_FLAG5);
     while (1)

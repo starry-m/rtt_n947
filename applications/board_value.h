@@ -15,10 +15,8 @@ typedef struct {
 }app_board_value_send_t;
 
 typedef struct {
-    uint8_t led_r;
-    uint8_t led_g;
-    uint8_t led_b;
-}app_board_value_recv_t;
+    uint8_t led_status;
+}led_topic_t;
 
 typedef struct {
     uint16_t sensor_Color_r;
@@ -31,6 +29,8 @@ typedef struct {
 typedef struct {
     uint8_t pressed;
 } touch_topic_t;
-
+typedef struct {
+    uint8_t pressed;
+} key_topic_t;
 #endif
 
