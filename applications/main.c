@@ -17,8 +17,10 @@
 #include <rtthread.h>
 #include <uMCN.h>
 #include "board_value.h"
+
 MCN_DEFINE(key_topic, sizeof(key_topic_t));
 key_topic_t key_data;
+
 static McnNode_t led_nod;
 MCN_DECLARE(led_topic);
 
@@ -26,7 +28,7 @@ MCN_DECLARE(led_topic);
 #define LEDG_PIN ((0 * 32) + 27)
 #define LEDB_PIN ((1 * 32) + 2)
 #define BUTTON_PIN ((0 * 32) + 23)
-
+#define BUTTON_ISP_PIN ((0 * 32) + 6)
 static void sw_pin_cb(void *args);
 
 static int  key_data_topic_echo(void *param)
@@ -57,6 +59,7 @@ int main(void)
     rt_pin_write(LEDG_PIN, PIN_HIGH);
     rt_pin_write(LEDB_PIN, PIN_HIGH);
     rt_pin_mode(BUTTON_PIN, PIN_MODE_INPUT_PULLUP);
+    rt_pin_mode(BUTTON_ISP_PIN, PIN_MODE_INPUT_PULLUP);
     rt_pin_attach_irq(BUTTON_PIN, PIN_IRQ_MODE_FALLING, sw_pin_cb, RT_NULL);
     rt_pin_irq_enable(BUTTON_PIN, 1);
 
@@ -90,14 +93,16 @@ int main(void)
       rt_uint32_t count = 0;
 
     char *str;
-    uint8_t last_key=0;
+    uint8_t last_key=0,last_key2=0;
     uint8_t led_r=1,led_g=1,led_b=1;
     while (1)
     {
         key_data.pressed=!rt_pin_read(BUTTON_PIN);
-        if(last_key !=key_data.pressed)
+        key_data.pressed_isp=!rt_pin_read(BUTTON_ISP_PIN);
+        if(last_key !=key_data.pressed || last_key2 !=key_data.pressed_isp)
         {
             last_key =key_data.pressed;
+            last_key2 =key_data.pressed_isp;
             mcn_publish(MCN_HUB(key_topic), &key_data);	
         }
         if (mcn_poll(led_nod)){
@@ -106,9 +111,9 @@ int main(void)
                     led_r= tled_data.led_status&0x4;
                     led_g= tled_data.led_status&0x2;
                     led_b= tled_data.led_status&0x1;
-                    rt_pin_write(LEDR_PIN, led_r);
-                    rt_pin_write(LEDG_PIN, led_g);
-                    rt_pin_write(LEDB_PIN, led_b);
+                    rt_pin_write(LEDR_PIN, !led_r);
+                    rt_pin_write(LEDG_PIN, !led_g);
+                    rt_pin_write(LEDB_PIN, !led_b);
         }
 
 //        rt_pin_write(LEDB_PIN, PIN_HIGH); /* Set GPIO output 1 */

@@ -9,7 +9,7 @@
 #include "stdio.h"
 
 #ifndef ST7735S_SCREEN_MODE
-#define ST7735S_SCREEN_MODE           VER_0_MODE
+#define ST7735S_SCREEN_MODE           HOR_1_MODE
 #endif
 #ifndef ST7735S_SCREEN_WIDTH
 #define ST7735S_SCREEN_WIDTH           128

@@ -268,12 +268,12 @@ void LCD_Set_Window(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height) {
 
     } else {
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setxcmd);
-        ST7735S_write_dat_u16(sx + 1);      //设置 X方向起点
-        ST7735S_write_dat_u16(width + 1);   //设置 X方向终点
+        ST7735S_write_dat_u16(sx + 0);      //设置 X方向起点
+        ST7735S_write_dat_u16(width + 0);   //设置 X方向终点
 
         ST7735S_write_reg(ST7735S_DEV.CNF.CMD.setycmd);
-        ST7735S_write_dat_u16(sy + 1);      //设置 Y方向起点
-        ST7735S_write_dat_u16(height + 1);  //设置 Y方向终点
+        ST7735S_write_dat_u16(sy + 3);      //设置 Y方向起点
+        ST7735S_write_dat_u16(height + 3);  //设置 Y方向终点
 
     }
 }
@@ -490,4 +490,146 @@ void LCD_Draw_Circle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t Color) {
             b--;
         }
     }
+}
+/** 
+ * @brief Draw a Filled circle with single color
+ * @param x0&y0 -> coordinate of circle center
+ * @param r -> radius of circle
+ * @param color -> color of circle
+ * @return  none
+ */
+void LCD_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+{
+
+	int16_t f = 1 - r;
+	int16_t ddF_x = 1;
+	int16_t ddF_y = -2 * r;
+	int16_t x = 0;
+	int16_t y = r;
+
+	LCD_Fast_DrawPoint(x0, y0 + r, color);
+	LCD_Fast_DrawPoint(x0, y0 - r, color);
+	LCD_Fast_DrawPoint(x0 + r, y0, color);
+	LCD_Fast_DrawPoint(x0 - r, y0, color);
+	LCD_DrawLine(x0 - r, y0, x0 + r, y0, color);
+
+	while (x < y) {
+		if (f >= 0) {
+			y--;
+			ddF_y += 2;
+			f += ddF_y;
+		}
+		x++;
+		ddF_x += 2;
+		f += ddF_x;
+
+		LCD_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, color);
+		LCD_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, color);
+
+		LCD_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, color);
+		LCD_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, color);
+	}
+
+}
+/** 
+ * @brief Draw a filled Rectangle with single color
+ * @param  x&y -> coordinates of the starting point
+ * @param w&h -> width & height of the Rectangle
+ * @param color -> color of the Rectangle
+ * @return  none
+ */
+void LCD_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color)
+{
+
+	uint8_t i;
+
+	/* Check input parameters */
+	if (x >= ST7735S_DEV.CNF.width ||
+		y >= ST7735S_DEV.CNF.height) {
+		/* Return error */
+		return;
+	}
+
+	/* Check width and height */
+	if ((x + w) >= ST7735S_DEV.CNF.width) {
+		w = ST7735S_DEV.CNF.width - x;
+	}
+	if ((y + h) >= ST7735S_DEV.CNF.height) {
+		h = ST7735S_DEV.CNF.height - y;
+	}
+
+	/* Draw lines */
+	for (i = 0; i <= h; i++) {
+		/* Draw lines */
+		LCD_DrawLine(x, y + i, x + w, y + i, color);
+	}
+
+}
+#define ABS(x) ((x) > 0 ? (x) : -(x))
+
+/** 
+ * @brief Draw a filled Triangle with single color
+ * @param  xi&yi -> 3 coordinates of 3 top points.
+ * @param color ->color of the triangle
+ * @return  none
+ */
+void LCD_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color)
+{
+
+	int16_t deltax = 0, deltay = 0, x = 0, y = 0, xinc1 = 0, xinc2 = 0,
+			yinc1 = 0, yinc2 = 0, den = 0, num = 0, numadd = 0, numpixels = 0,
+			curpixel = 0;
+
+	deltax = ABS(x2 - x1);
+	deltay = ABS(y2 - y1);
+	x = x1;
+	y = y1;
+
+	if (x2 >= x1) {
+		xinc1 = 1;
+		xinc2 = 1;
+	}
+	else {
+		xinc1 = -1;
+		xinc2 = -1;
+	}
+
+	if (y2 >= y1) {
+		yinc1 = 1;
+		yinc2 = 1;
+	}
+	else {
+		yinc1 = -1;
+		yinc2 = -1;
+	}
+
+	if (deltax >= deltay) {
+		xinc1 = 0;
+		yinc2 = 0;
+		den = deltax;
+		num = deltax / 2;
+		numadd = deltay;
+		numpixels = deltax;
+	}
+	else {
+		xinc2 = 0;
+		yinc1 = 0;
+		den = deltay;
+		num = deltay / 2;
+		numadd = deltax;
+		numpixels = deltay;
+	}
+
+	for (curpixel = 0; curpixel <= numpixels; curpixel++) {
+		LCD_DrawLine(x, y, x3, y3, color);
+
+		num += numadd;
+		if (num >= den) {
+			num -= den;
+			x += xinc1;
+			y += yinc1;
+		}
+		x += xinc2;
+		y += yinc2;
+	}
 }

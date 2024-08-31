@@ -31,6 +31,7 @@ typedef struct {
 } touch_topic_t;
 typedef struct {
     uint8_t pressed;
+    uint8_t pressed_isp;
 } key_topic_t;
 #endif
 

@@ -13,6 +13,7 @@
 #include <rtdbg.h>
 #include <uMCN.h>
 #include "board_value.h"
+
 static McnNode_t color_temp_nod;
 MCN_DECLARE(color_temp);
 static McnNode_t touch_nod;
@@ -21,6 +22,8 @@ static McnNode_t key_nod;
 MCN_DECLARE(key_topic);
 
 MCN_DEFINE(led_topic, sizeof(led_topic_t));
+
+
 static led_topic_t led_data;
 
 
@@ -187,11 +190,11 @@ static void tcpclient_handle_thread(void *parameter)
             else
             {
                 /* 在控制终端显示收到的数据 */
-                rt_kprintf("RECEIVED DATA = %s \n", recv_data);
+//                rt_kprintf("RECEIVED DATA = %s \n", recv_data);
             }
             if(1==recv_data_jude(recv_data))
             {
-								LOG_I(send_status_data);
+//                LOG_I(send_status_data);
                 /* 发送数据到connected socket */
                 ret = send(connected, send_status_data, strlen(send_status_data), 0);
                 if (ret < 0)
@@ -246,7 +249,6 @@ static void data_sync_thread(void *parameter)
          // rt_kprintf("get sync topic, tick=%ld\n", data.tick);
          //LOG_I("sensor_Color_r=%d, sensor_Color_g=%d,sensor_Color_b=%d,sensor_Color_c=%d,temperature=%d.%d",\
         // data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100);
-      
     }
     if (mcn_poll(touch_nod)){
         mcn_copy(MCN_HUB(touch_topic), touch_nod, &t_data);
@@ -255,9 +257,11 @@ static void data_sync_thread(void *parameter)
     if (mcn_poll(key_nod)){
         mcn_copy(MCN_HUB(key_topic), key_nod, &k_data);
         LOG_I("key pressed status=%d", k_data.pressed);   
+        LOG_I("ISP key pressed status=%d", k_data.pressed_isp);  
     }
-				rt_sprintf(send_status_data,"r=%d,g=%d,b=%d,c=%d,temp=%d.%d,touch=%d,key=%d \n\0",\
-        data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,(uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100,t_data.pressed,1);
+        rt_sprintf(send_status_data,"r=%d,g=%d,b=%d,c=%d,temp=%d.%d,touch=%d,key=%d,key_ISP=%d \n\0",\
+        data.sensor_Color_r,data.sensor_Color_g,data.sensor_Color_b,data.sensor_Color_c,\
+        (uint16_t)(data.temperature),(uint16_t)(data.temperature*100)/100%100,t_data.pressed,k_data.pressed,k_data.pressed_isp);
       
     rt_thread_mdelay(1000);
     // rt_sprintf(send_temp, "第%d次发送\r\n", send_tick++);

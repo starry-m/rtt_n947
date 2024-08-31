@@ -6,11 +6,21 @@
 #include "drv_spi.h"
 #include <rtthread.h>
 #define DBG_ENABLE
-#define DBG_TAG "ST7735_DEMO"
+#define DBG_TAG "ST7735_GUI"
 #define DBG_LVL DBG_LOG
 
 #include <rtdbg.h>
+#include <uMCN.h>
+#include "board_value.h"
 
+static McnNode_t color_temp_nod;
+MCN_DECLARE(color_temp);
+static McnNode_t touch_nod;
+MCN_DECLARE(touch_topic);
+static McnNode_t key_nod;
+MCN_DECLARE(key_topic);
+static McnNode_t led_nod;
+MCN_DECLARE(led_topic);
 
 struct rt_spi_device *st7735s_device = RT_NULL;
 
@@ -101,29 +111,63 @@ int st7735s_init(void) {
 #define THREAD_STACK_SIZE       1024
 #define THREAD_TIMESLICE        5
 static rt_thread_t tid1 = RT_NULL;
-/* 线程1的入口函数 */
-static void thread1_entry(void *parameter)
+
+
+static void thread_gui_entry(void *parameter)
 {
+    static  touch_topic_t t_data;
+    static  apds_temp_topic_t data;
+    static  key_topic_t k_data;
+    static  led_topic_t tled_data;
     rt_uint32_t count = 0;
+    LCD_Clear(BLACK);
     while (1)
     {
         /* 线程1采用低优先级运行，一直打印计数值 */
 //        rt_kprintf("thread1 count: %d\n", count ++);
-        rt_thread_mdelay(500);
-        LCD_Clear(RED);
-        rt_thread_mdelay(500);
-        LCD_Clear(GREEN);
-        rt_thread_mdelay(500);
-        LCD_Clear(BLUE);
+    if (mcn_poll(color_temp_nod)) {
+        /* copy topic data */
+        mcn_copy(MCN_HUB(color_temp), color_temp_nod, &data);
+ }
+    if (mcn_poll(touch_nod)){
+        mcn_copy(MCN_HUB(touch_topic), touch_nod, &t_data);
+        LCD_DrawFilledRectangle(20,80,40,40,t_data.pressed?BRRED:BLACK);
+        // LOG_I("touch status=%d", t_data.pressed);   
+    }
+    if (mcn_poll(key_nod)){
+        mcn_copy(MCN_HUB(key_topic), key_nod, &k_data);
+        LOG_I("key pressed status=%d", k_data.pressed);   
+        LOG_I("ISP key pressed status=%d", k_data.pressed_isp);  
+        LCD_DrawFilledTriangle(80,10,70,30,90,30,k_data.pressed?YELLOW:BLACK);
+        LCD_DrawFilledTriangle(80,80,70,100,90,100,k_data.pressed_isp?YELLOW:BLACK);
+        // LCD_DrawRectangle();
+    }
+    if (mcn_poll(led_nod)){
+        mcn_copy(MCN_HUB(led_topic), led_nod, &tled_data);
+        // LOG_I("led status=%d\r\n", tled_data.led_status);  
+        LCD_DrawFilledCircle(120,20,10,tled_data.led_status&0x4?RED:BLACK);
+        LCD_DrawFilledCircle(120,60,10,tled_data.led_status&0x2?GREEN:BLACK);
+        LCD_DrawFilledCircle(120,100,10,tled_data.led_status&0x1?BLUE:BLACK);
+        }
+        rt_thread_mdelay(100);
+//        LCD_Clear(RED);
+        // rt_thread_mdelay(500);
+        // LCD_Clear(GREEN);
+        // rt_thread_mdelay(500);
+        // LCD_Clear(BLUE);
     }
 }
 
 
 int st7735s_test(void)
 {
-    /* 创建线程1，名称是thread1，入口是thread1_entry*/
-    tid1 = rt_thread_create("thread1",
-                            thread1_entry, RT_NULL,
+     color_temp_nod = mcn_subscribe(MCN_HUB(color_temp), RT_NULL, RT_NULL);
+    touch_nod = mcn_subscribe(MCN_HUB(touch_topic), RT_NULL, RT_NULL);
+    key_nod = mcn_subscribe(MCN_HUB(key_topic), RT_NULL, RT_NULL);
+    led_nod = mcn_subscribe(MCN_HUB(led_topic), RT_NULL, RT_NULL);
+    /* 创建线程1，名称是thread1，入口是thread_gui_entry*/
+    tid1 = rt_thread_create("lcd",
+                            thread_gui_entry, RT_NULL,
                             THREAD_STACK_SIZE,
                             THREAD_PRIORITY, THREAD_TIMESLICE);
     /* 如果获得线程控制块，启动这个线程 */

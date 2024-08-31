@@ -32,5 +32,10 @@ void LCD_Fast_DrawPoint(uint16_t x,uint16_t y,uint16_t color);	//快速画点--�
 void LCD_DrawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t Color);
 void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t Color);		                //画线
 void LCD_Draw_Circle(uint16_t x0,uint16_t y0,uint8_t r, uint16_t Color);					            //画圆
+void LCD_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+void LCD_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
+void LCD_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
+
+
 #endif //_ST7735S_H
 
