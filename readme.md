@@ -108,6 +108,9 @@ FRDM-MCXN947 是 NXP 推出的一款集成下载器、以太网和多功能模�
 
 ## 1、硬件电路分析
 
+![](./pic/硬件连接.png)
+使用 FRDM-N947 开发板+APDS9960 传感器模块，就可以做出很多好玩的效果。
+
 ## 2、实现原理分析
 
 ### 以太网 LwIP 协议栈
@@ -132,7 +135,9 @@ LwIP 全称 Light weight Interner protocol,是一个轻量化且开源的 TCP/IP
 
 ## 3、软件流程分析
 
-因为 rtt 有适配这个板子且想真正的用 rtt 做点东西，所以我选择使用主线 rtt 的 frdm-n947。
+- 软件框图
+  ![](./pic/软件框图.png)
+  因为 rtt 有适配这个板子且想真正的用 rtt 做点东西，所以我选择使用主线 rtt 的 frdm-n947。
 
 ### 1、环境搭建
 
@@ -270,6 +275,58 @@ static void thread_touch_entry(void *parameter)
 ### 5、TCP 通信
 
 这里选择的与电脑通信方式为板子上开一个 tcp 服务端，等待电脑作为客户端连接和指令操作。目前是基于 RTT 示例的 TCP_SERVER_DEMO 修改，是对一个单一客户端的操作。
+并且 Lwip 默认的 TCP 连接后,他的 recv 函数是阻塞接收的（虽然也可以设置超时退出时间），而我的 send 函数又与他在同一个线程。所以我选择在当前文件中使用另一个线程做数据交换，本线程只做 tcp 的 send 和 recv。
+
+```c
+static uint8_t recv_data_jude(char *str)
+{
+    char *ptr_splice;
+    if(NULL!=rt_strstr(str,"get status"))
+    {
+        return 1;
+    }
+    else if(NULL!=rt_strstr(str,"set status"))
+    {
+        ptr_splice=strchr(str,':');
+        rt_strcpy(temp_buffer,ptr_splice+1);
+        LOG_I("get from pc:%s",temp_buffer);
+        update_led_status=atoi(temp_buffer);
+        LOG_I("update_led_status=%d",update_led_status);
+        led_data.led_status=update_led_status;
+        mcn_publish(MCN_HUB(led_topic), &led_data);
+        return 2;
+    }
+    return 0;
+}
+```
+
+上面是对上位机发送消息的命令进行判断。
+
+```c
+int thread_tcp_event_start(void)
+{
+    color_temp_nod = mcn_subscribe(MCN_HUB(color_temp), RT_NULL, RT_NULL);
+    touch_nod = mcn_subscribe(MCN_HUB(touch_topic), RT_NULL, RT_NULL);
+    key_nod = mcn_subscribe(MCN_HUB(key_topic), RT_NULL, RT_NULL);
+
+    mcn_advertise(MCN_HUB( led_topic),  led_topic_echo);
+    /* 初始化信号量 */
+    rt_sem_init(&connected_sem, "con_sem", 0, RT_IPC_FLAG_FIFO);
+
+    tid_tcp = rt_thread_create("th tcp", tcpclient_handle_thread, RT_NULL, 2048, 14, 10);
+    /* 如果获得线程控制块，启动这个线程 */
+    if (tid_tcp != RT_NULL)
+        rt_thread_startup(tid_tcp);
+    tid_data_sync = rt_thread_create("th sync", data_sync_thread, RT_NULL, 2048, 16, 10);
+    /* 如果获得线程控制块，启动这个线程 */
+    if (tid_data_sync != RT_NULL)
+        rt_thread_startup(tid_data_sync);
+
+    return 0;
+}
+
+INIT_APP_EXPORT(thread_tcp_event_start);
+```
 
 ### 6、屏幕状态信息显示
 
@@ -319,6 +376,30 @@ static void data_sync_thread(void *parameter)
 
 ```
 
+## 5、上位机界面
+
+![](./pic/上位机界面.png)
+使用 QT 完成简单的界面显示和交互
+
 # 四、效果展示与遇到的问题
 
+## 效果展示
+
+- 获取传感器数据
+  ![](./pic/数据读取.png)
+- 获取触摸与按键状态
+  ![](./pic/触摸检测.png)
+- 控制 LED 状态
+  ![](./pic/控制LED.png)
+  ![](./pic/LED控制2.png)
+
+## 遇到的问题
+
+- 温度传感器使用 cmd 命令读取没问题，但是放在线程中一直读取时只能读取一次数据，然后再也无法读到，仔细查看原理图发现默认上拉电阻没接，最后选择将 apds 传感器的 scl、sda 直接接在温度传感器引脚上，这样就加上了上拉电阻，数据也能正常读取了。
+- 触摸检测本来直接使用示例，硬件触发加中断。会导致 tsi 中断一直触发，会影响 rtos 的实时性，所以改成了线程中轮询读取。
+- TCP 通信本来想做收发各一个线程，但是当客户端断开连接后会导致 rtt shell 中报错，尝试过挂起发送线程，任然无效，问题定位可能不对。因为赶时间，所以选择换回示例方法，后面再做研究。
+
 # 五、感想与未来计划
+
+- 这是我第二次使用 NXP 的单片机，第一次是寒假练的 RT1021，当时就感觉 NXP 单片机的外设很多，玩法也多。这次使用 N947 后，感觉更明显，各种各样的外设和特性，看的我眼花缭乱，可以说一大半的功能，我都还没体验到。只能说资源 IP 多，做单片机就是豪横，哈哈，啥都能做。
+- 下一步必须体验下他的双核跟 NPU。
